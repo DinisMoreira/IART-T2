@@ -1,13 +1,14 @@
 #include <stdio.h>
-#include <iostream.h>
+#include <iostream>
+#include <fstream>
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
-#include <fstream.h>
 #include <string.h>
 
+using namespace std;
 
-main(int argc, char * argv[])
+int main(int argc, char * argv[])
 {
 int norooms,nostudents, noevents;
 int nofeatures;

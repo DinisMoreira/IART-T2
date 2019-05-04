@@ -99,17 +99,36 @@ public class Problem {
             this.events.add(event);
     }
 
+
     public void addStudentEventRelation(Student student, Event event) {
-        if (this.students.contains(student))
+        if(this.students.contains(student) == false)
             return;
-        if (this.events.contains(event))
+        if(this.events.contains(event) == false)
             return;
 
+        final Map<Student, Event> element = new HashMap<>();
+        element.put(student, event);
+        if(this.studentEvents.contains(element) == false)
+            this.studentEvents.add(element);
+    }
+    
+    public void addRoomEventRelation(Room room, Event event) {
+        if(this.rooms.contains(room) == false)
+            return;
+        if(this.events.contains(event) == false)
+            return;
+        
+        if(doesRoomHaveRequiredFeatures(room, event) == false)
+            return;
+            
+        final Map<Room, Event> element = new HashMap<>();
+        element.put(room, event);
+        if(this.roomEvents.contains(element) == false)
+            this.roomEvents.add(element);
     }
 
     public void getProblemFromFile(File file) throws FileNotFoundException {
         Scanner f = new Scanner(file);
-
         int numEvents = f.nextInt();
         int numRooms = f.nextInt();
         int numFeatures = f.nextInt();
@@ -125,5 +144,11 @@ public class Problem {
             Room room = new Room(i, f.nextInt());
         }
     }
-    
+
+    private Boolean doesRoomHaveRequiredFeatures(Room room, Event event) {
+        for(int feature : event.getRequiredFeatures())
+            if(room.getFeatures().contains(feature) == false)
+                return false;
+        return true;
+    }
 }

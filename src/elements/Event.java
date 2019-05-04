@@ -30,6 +30,10 @@ public class Event {
         return this.id;
     }
 
+    public List<Integer> getRequiredFeatures() {
+        return this.requiredFeatures;
+    }
+
     @Override
     public boolean equals(Object e) {
         if (this == e) return true;
