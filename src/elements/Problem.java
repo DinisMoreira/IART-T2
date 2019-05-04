@@ -1,18 +1,21 @@
 package elements;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Problem{
     
     private int numEvents;
     private int numRooms;
     private int numFeatures;
     private int numStudents;
-    private Vector<Vector<int>> roomSizes;
-    private Vector<Vector<boolean>> studentEvents;
-    private Vector<Vector<boolean>> roomFeatures;
+    private List<List<Integer>> roomSizes;
+    private List<List<Boolean>> studentEvents;
+    private List<List<Boolean>> roomFeatures;
 
     //Constructor
 
-    public Problem(int numEvents, int numRooms, int numFeatures, int numStudents, Vector<Vector<int>> roomSizes, Vector<Vector<boolean>> studentEvents, Vector<Vector<boolean>> roomFeatures) {
+    public Problem(int numEvents, int numRooms, int numFeatures, int numStudents, List<List<Integer>> roomSizes, List<List<Boolean>> studentEvents, List<List<Boolean>> roomFeatures) {
         this.numEvents = numEvents;
         this.numRooms = numRooms;
         this.numFeatures = numFeatures;
@@ -56,27 +59,27 @@ public class Problem{
         this.numStudents = numStudents;
     }
 
-    public Vector<Vector<int>> getRoomSizes() {
+    public List<List<Integer>> getRoomSizes() {
         return this.roomSizes;
     }
 
-    public void setRoomSizes(Vector<Vector<int>> roomSizes) {
+    public void setRoomSizes(List<List<Integer>> roomSizes) {
         this.roomSizes = roomSizes;
     }
 
-    public Vector<Vector<boolean>> getStudentEvents() {
+    public List<List<Boolean>> getStudentEvents() {
         return this.studentEvents;
     }
 
-    public void setStudentEvents(Vector<Vector<boolean>> studentEvents) {
+    public void setStudentEvents(List<List<Boolean>> studentEvents) {
         this.studentEvents = studentEvents;
     }
 
-    public Vector<Vector<boolean>> getRoomFeatures() {
+    public List<List<Boolean>> getRoomFeatures() {
         return this.roomFeatures;
     }
 
-    public void setRoomFeatures(Vector<Vector<boolean>> roomFeatures) {
+    public void setRoomFeatures(List<List<Boolean>> roomFeatures) {
         this.roomFeatures = roomFeatures;
     }
 
