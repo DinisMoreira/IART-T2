@@ -1,39 +1,33 @@
 package elements;
 
+
 import java.util.List;
 import java.util.ArrayList;
 
 public class Event {
     private int id;
-    private List<Room> acceptableRooms;
+    private List<Integer> requiredFeatures;
 
     public Event(int id) {
         this.id = id;
-        this.acceptableRooms = new ArrayList<>();
+        this.requiredFeatures = new ArrayList<>();
     }
 
-    public int getID() {
-        return this.id;
-    }
-
-    public List<Room> getAcceptableRooms() {
-        return this.acceptableRooms;
-    }
-
-    public Boolean hasRoom(Room room) {
-        for(Room r : this.acceptableRooms)
-            if(r.equals(room))
+    public Boolean hasFeature(int feature) {
+        for(Integer f : this.requiredFeatures)
+            if(f == feature)
                 return true;
         return false;
     }
 
-    public Boolean addRoom(Room room) {
-        if(hasRoom(room) == false) {
-            this.acceptableRooms.add(room);
-            return true;
-        }
-        else
-            return false;
+    public void addFeature(int feature) {
+        if(hasFeature(feature) == false)
+            this.requiredFeatures.add(feature);
+    }
+
+
+    public int getID() {
+        return this.id;
     }
 
     @Override
@@ -43,9 +37,6 @@ public class Event {
         if (this.getClass() != e.getClass()) return false;
 
         Event event = (Event) e;
-        if(this.id == event.getID())
-            return true;
-        else
-            return false;
+        return this.id == event.getID();
     }
 }
