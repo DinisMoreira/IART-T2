@@ -1,8 +1,18 @@
+import java.io.*;
+import java.util.Scanner;
+
 public class Main{
     
     public static void main(String[] args){
+        Scanner scn = new Scanner(System.in);
+        //System.out.println("What is the name of the problem file?");
+        String fileName;// = scn.nextLine();
 
-        System.out.println("Hello World");
+        fileName = args[0];
+
+        
+
+
 
     }
 
