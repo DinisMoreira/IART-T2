@@ -16,17 +16,11 @@ public class Room {
         this.features = new ArrayList<>();
     }
 
-    public Boolean hasFeature(int feature) {
-        for(Integer f : this.features)
-            if(f == feature)
-                return true;
-        return false;
-    }
-
     public void addFeature(int feature) {
-        if(hasFeature(feature) == false)
+        if(this.features.contains(feature) == false)
             this.features.add(feature);
     }
+
 
     public int getSize() {
         return this.size;
@@ -35,6 +29,11 @@ public class Room {
     public int getID() {
         return this.id;
     }
+
+    public List<Integer> getFeatures() {
+        return this.features;
+    }
+    
 
     @Override
     public boolean equals(Object r) {
