@@ -45,14 +45,39 @@ public class Problem{
             this.events.add(event);
     }
 
+
     public void addStudentEventRelation(Student student, Event event) {
-        if(this.students.contains(student))
+        if(this.students.contains(student) == false)
             return;
-        if(this.events.contains(event))
+        if(this.events.contains(event) == false)
             return;
 
-
-
+        final Map<Student, Event> element = new HashMap<>();
+        element.add(student, event);
+        if(this.studentEvents.contains(element) == false)
+            this.studentEvents.add(element);
     }
     
+    public void addRoomEventRelation(Room room, Event event) {
+        if(this.rooms.contains(room) == false)
+            return;
+        if(this.events.contains(event) == false)
+            return;
+        
+        if(doesRoomHaveRequiredFeatures(room, event) == false)
+            return;
+
+        final Map<Student, Event> element = new HashMap<>();
+        element.add(student, event);
+        if(this.studentEvents.contains(element) == false)
+            this.studentEvents.add(element);
+    }
+
+
+    private Boolean doesRoomHaveRequiredFeatures(Room room, Event event) {
+        for(int feature : event.getRequiredFeatures())
+            if(room.getRequiredFeatures().contains(feature) == false)
+                return false;
+        return true;
+    }
 }
