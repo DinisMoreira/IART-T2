@@ -118,7 +118,7 @@ public class Problem {
         if(this.events.contains(event) == false)
             return;
         
-        if(doesRoomHaveRequiredFeatures(room, event) == false)
+        if(roomHasRequiredFeatures(room, event) == false)
             return;
             
         final Map<Room, Event> element = new HashMap<>();
@@ -139,13 +139,32 @@ public class Problem {
         System.out.println(numFeatures);
         System.out.println(numStudents);
 
+        //Add students
+        for(int i = 0; i < numStudents; i++){
+            Student stud = new Student(i);
+            this.students.add(stud);
+        }
 
+        //Add Events (without required features)
+        for(int i = 0; i < numEvents; i++){
+            Event e = new Event(i);
+            this.events.add(e);
+        }
+
+        //Add Rooms
         for(int i = 0; i < numRooms; i++){
             Room room = new Room(i, f.nextInt());
+            this.rooms.add(room);
+        }
+
+        
+
+        for(int i = 0; i < numStudents*numEvents; i++){
+            
         }
     }
 
-    private Boolean doesRoomHaveRequiredFeatures(Room room, Event event) {
+    private Boolean roomHasRequiredFeatures(Room room, Event event) {
         for(int feature : event.getRequiredFeatures())
             if(room.getFeatures().contains(feature) == false)
                 return false;
