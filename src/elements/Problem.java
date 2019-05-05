@@ -18,16 +18,21 @@ public class Problem {
     private List<Student> students;
     private List<Event> events;
 
-    private List<Map<Student, Event>> studentEvents; // List containg matches of Students and Events
-    private List<Map<Room, Event>> roomEvents; // List containg matches of Rooms and Events
+    private ArrayList<ArrayList<Boolean>> studentEvents;
+
+    //private List<Map<Student, Event>> studentEvents; // List containg matches of Students and Events
+    //private List<Map<Room, Event>> roomEvents; // List containg matches of Rooms and Events
 
     public Problem() {
         this.rooms = new ArrayList<>();
         this.students = new ArrayList<>();
         this.events = new ArrayList<>();
 
-        this.studentEvents = new ArrayList<>();
-        this.roomEvents = new ArrayList<>();
+        this.studentEvents = new ArrayList<ArrayList<Boolean>>();
+
+
+        //this.studentEvents = new ArrayList<>();
+        //this.roomEvents = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -67,21 +72,21 @@ public class Problem {
         this.events = events;
     }
 
-    public List<Map<Student, Event>> getStudentEvents() {
+    public ArrayList<ArrayList<Boolean>> getStudentEvents() {
         return this.studentEvents;
     }
 
-    public void setStudentEvents(List<Map<Student, Event>> studentEvents) {
+    public void setStudentEvents(ArrayList<ArrayList<Boolean>> studentEvents) {
         this.studentEvents = studentEvents;
     }
 
-    public List<Map<Room, Event>> getRoomEvents() {
+    /*public List<Map<Room, Event>> getRoomEvents() {
         return this.roomEvents;
     }
 
     public void setRoomEvents(List<Map<Room, Event>> roomEvents) {
         this.roomEvents = roomEvents;
-    }
+    }*/
 
     // Functions
     public void addRoom(Room room) {
@@ -101,18 +106,19 @@ public class Problem {
 
 
     public void addStudentEventRelation(Student student, Event event) {
-        if(this.students.contains(student) == false)
+        if(this.students.contains(student) == false){
+            System.out.println("Can't add student/event relation, student with id " + student.getID() + " doen not exist");
             return;
-        if(this.events.contains(event) == false)
+        }
+        if(this.events.contains(event) == false){
+            System.out.println("Can't add student/event relation, event with id " + event.getID() + " doen not exist");
             return;
+        }
 
-        final Map<Student, Event> element = new HashMap<>();
-        element.put(student, event);
-        if(this.studentEvents.contains(element) == false)
-            this.studentEvents.add(element);
+        this.studentEvents.get(student.getID()).set(event.getID(), true);
     }
     
-    public void addRoomEventRelation(Room room, Event event) {
+   /* public void addRoomEventRelation(Room room, Event event) {
         if(this.rooms.contains(room) == false)
             return;
         if(this.events.contains(event) == false)
@@ -125,7 +131,7 @@ public class Problem {
         element.put(room, event);
         if(this.roomEvents.contains(element) == false)
             this.roomEvents.add(element);
-    }
+    }*/
 
     public void getProblemFromFile(File file) throws FileNotFoundException {
         Scanner f = new Scanner(file);
@@ -138,6 +144,14 @@ public class Problem {
         System.out.println(numRooms);
         System.out.println(numFeatures);
         System.out.println(numStudents);
+
+        //Initialize students/events relation array
+        for(int s = 0; s < numStudents; s++){
+            this.studentEvents.add(new ArrayList<Boolean>());
+            for(int e = 0; e < numEvents; e++){
+                this.studentEvents.get(s).add(false);
+            }
+        }
 
         //Add students
         for(int i = 0; i < numStudents; i++){
@@ -158,10 +172,17 @@ public class Problem {
         }
 
         
-
-        for(int i = 0; i < numStudents*numEvents; i++){
-            
+        
+        //Add student Event relations
+        for(int s = 0; s < numStudents; s++){
+            for(int e = 0; e < numEvents; e++){
+                if(f.nextInt() == 1){
+                    addStudentEventRelation(this.students.get(s), this.events.get(e));
+                }
+            }
         }
+
+        
     }
 
     private Boolean roomHasRequiredFeatures(Room room, Event event) {
