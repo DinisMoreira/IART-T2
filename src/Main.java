@@ -22,8 +22,18 @@ public class Main {
             System.out.println("File Not Found");
         }
 
-        System.out.println("Num Students: " + prob.getStudents().size());
-        System.out.println("Num Events: " + prob.getEvents().size());
+        
+        showProblem(prob);
+        
+    }
+
+
+    public static void showProblem(Problem prob){
+
+        System.out.println();
+        System.out.println("Number of Students: " + prob.getStudents().size());
+        System.out.println("Number of Events: " + prob.getEvents().size());
+        System.out.println();
 
         for(int s = 0; s < prob.getStudents().size(); s++){
             for(int e = 0; e < prob.getEvents().size(); e++){
@@ -33,11 +43,26 @@ public class Main {
             }
         }
 
-        
+        System.out.println();
+        System.out.println("Number of Rooms: " + prob.getRooms().size());
+        System.out.println();
+
+        for(int r = 0; r < prob.getRooms().size(); r++){
+            for(int f = 0; f < prob.getRooms().get(r).getFeatures().size(); f++){
+                System.out.println("Room " + r + " as feature " + prob.getRooms().get(r).getFeatures().get(f));
+            }
+        }
 
         
+        System.out.println();
+        System.out.println("Number of Events: " + prob.getEvents().size());
+        System.out.println();
 
-
+        for(int e = 0; e < prob.getEvents().size(); e++){
+            for(int f = 0; f < prob.getEvents().get(e).getRequiredFeatures().size(); f++){
+                System.out.println("Event " + e + " as required feature " + prob.getEvents().get(e).getRequiredFeatures().get(f));
+            }
+        }
 
     }
 

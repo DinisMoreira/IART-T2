@@ -16,9 +16,9 @@ public class Room {
         this.features = new ArrayList<>();
     }
 
-    public void addFeature(int feature) {
-        if(this.features.contains(feature) == false)
-            this.features.add(feature);
+    public void addFeature(int featureId) {
+        if(this.features.contains(featureId) == false)
+            this.features.add(featureId);
     }
 
 

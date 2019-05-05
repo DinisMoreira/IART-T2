@@ -20,19 +20,13 @@ public class Problem {
 
     private ArrayList<ArrayList<Boolean>> studentEvents;
 
-    //private List<Map<Student, Event>> studentEvents; // List containg matches of Students and Events
-    //private List<Map<Room, Event>> roomEvents; // List containg matches of Rooms and Events
-
+    //Constructor
     public Problem() {
         this.rooms = new ArrayList<>();
         this.students = new ArrayList<>();
         this.events = new ArrayList<>();
 
         this.studentEvents = new ArrayList<ArrayList<Boolean>>();
-
-
-        //this.studentEvents = new ArrayList<>();
-        //this.roomEvents = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -80,13 +74,6 @@ public class Problem {
         this.studentEvents = studentEvents;
     }
 
-    /*public List<Map<Room, Event>> getRoomEvents() {
-        return this.roomEvents;
-    }
-
-    public void setRoomEvents(List<Map<Room, Event>> roomEvents) {
-        this.roomEvents = roomEvents;
-    }*/
 
     // Functions
     public void addRoom(Room room) {
@@ -104,7 +91,6 @@ public class Problem {
             this.events.add(event);
     }
 
-
     public void addStudentEventRelation(Student student, Event event) {
         if(this.students.contains(student) == false){
             System.out.println("Can't add student/event relation, student with id " + student.getID() + " doen not exist");
@@ -118,34 +104,15 @@ public class Problem {
         this.studentEvents.get(student.getID()).set(event.getID(), true);
     }
     
-   /* public void addRoomEventRelation(Room room, Event event) {
-        if(this.rooms.contains(room) == false)
-            return;
-        if(this.events.contains(event) == false)
-            return;
-        
-        if(roomHasRequiredFeatures(room, event) == false)
-            return;
-            
-        final Map<Room, Event> element = new HashMap<>();
-        element.put(room, event);
-        if(this.roomEvents.contains(element) == false)
-            this.roomEvents.add(element);
-    }*/
 
     public void getProblemFromFile(File file) throws FileNotFoundException {
-        Scanner f = new Scanner(file);
-        int numEvents = f.nextInt();
-        int numRooms = f.nextInt();
-        int numFeatures = f.nextInt();
-        int numStudents = f.nextInt();
+        Scanner fi = new Scanner(file);
+        int numEvents = fi.nextInt();
+        int numRooms = fi.nextInt();
+        int numFeatures = fi.nextInt();
+        int numStudents = fi.nextInt();
 
-        System.out.println(numEvents);
-        System.out.println(numRooms);
-        System.out.println(numFeatures);
-        System.out.println(numStudents);
-
-        //Initialize students/events relation array
+        //Initialize students/events relation matrix
         for(int s = 0; s < numStudents; s++){
             this.studentEvents.add(new ArrayList<Boolean>());
             for(int e = 0; e < numEvents; e++){
@@ -165,9 +132,9 @@ public class Problem {
             this.events.add(e);
         }
 
-        //Add Rooms
+        //Add Rooms (without features)
         for(int i = 0; i < numRooms; i++){
-            Room room = new Room(i, f.nextInt());
+            Room room = new Room(i, fi.nextInt());
             this.rooms.add(room);
         }
 
@@ -176,11 +143,36 @@ public class Problem {
         //Add student Event relations
         for(int s = 0; s < numStudents; s++){
             for(int e = 0; e < numEvents; e++){
-                if(f.nextInt() == 1){
+                if(fi.nextInt() == 1){
                     addStudentEventRelation(this.students.get(s), this.events.get(e));
                 }
             }
         }
+
+        //Add features to rooms
+        for(int r = 0; r < numRooms; r++){
+            for(int f = 0; f < numFeatures; f++){
+                if(fi.nextInt() == 1){
+                    this.rooms.get(r).addFeature(f);
+                }
+            }
+        }
+
+        //Add required features to events
+        for(int e = 0; e < numEvents; e++){
+            for(int f = 0; f < numFeatures; f++){
+                if(fi.nextInt() == 1){
+                    this.events.get(e).addFeature(f);
+                }
+            }
+        }
+
+        //Check if there are more values
+        if(!fi.hasNext()){
+            System.out.println("Successfully read file");
+            return;
+        }
+        System.out.println("WARNING: Bad file values");
 
         
     }
