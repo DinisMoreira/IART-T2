@@ -7,6 +7,13 @@ import java.util.ArrayList;
 public class Event {
     private int id;
     private List<Integer> requiredFeatures;
+ 
+    private int attendeesNum; // TO DO
+    
+
+    //Solution Parameters
+    private int timeSlot;
+    private Room room;
 
     public Event(int id) {
         this.id = id;
@@ -33,6 +40,24 @@ public class Event {
     public List<Integer> getRequiredFeatures() {
         return this.requiredFeatures;
     }
+
+
+    public int getTimeSlot() {
+        return this.timeSlot;
+    }
+
+    public void setTimeSlot(int timeSlot) {
+        this.timeSlot = timeSlot;
+    }
+
+    public Room getRoom() {
+        return this.room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
 
     @Override
     public boolean equals(Object e) {

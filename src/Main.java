@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Scanner;
 
+import algorithms.HillClimbing;
 import elements.*;
 
 public class Main {
@@ -24,6 +25,10 @@ public class Main {
 
         
         showProblem(prob);
+
+
+        HillClimbing hc = new HillClimbing(prob);
+        hc.getSolution();
         
     }
 

@@ -177,6 +177,10 @@ public class Problem {
         
     }
 
+    private void setNumberOfAttendeesInEvents(){
+        //TO DO
+    }
+
     private Boolean roomHasRequiredFeatures(Room room, Event event) {
         for(int feature : event.getRequiredFeatures())
             if(room.getFeatures().contains(feature) == false)
