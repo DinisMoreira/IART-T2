@@ -168,13 +168,6 @@ public class Problem {
             }
         }
 
-        //Check if there are more values
-        if(!fi.hasNext()){
-            System.out.println("Successfully read file");
-            return;
-        }
-        System.out.println("WARNING: Bad file values");
-
         // Add to Event all acceptable Rooms
         for(Event event : this.events) {
             for(Room room : this.rooms) {
@@ -185,6 +178,13 @@ public class Problem {
                 }
             }
         }
+
+        //Check if there are more values
+        if(!fi.hasNext()){
+            System.out.println("Successfully read file");
+            return;
+        }
+        System.out.println("WARNING: Bad file values");
         
     }
 
