@@ -24,13 +24,13 @@ public class Solution {
                 return false;
             }
         }
-/*
+
         //Check if event can Take place in that Room (number of Attendees and feature check)
         if(this.eventList.get(eventId).hasAcceptableRoom(room) == false) {
             System.out.println("Can't allocate event: " + eventId + ", no acceptable room");
             return false;
         }
-*/
+
         //Set event Time Slot and Room
         eventList.get(eventId).setRoom(room);
         eventList.get(eventId).setTimeSlot(timeSlot);
