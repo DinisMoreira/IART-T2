@@ -1,21 +1,17 @@
 package elements;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Solution {
-    private ArrayList<Event> eventList;
-
+    private List<Event> eventList;
 
 
     public Solution(Problem prob){
-        this.eventList = new ArrayList<Event>();
-
-        for(int i = 0; i < prob.getEvents().size(); i++){
-            eventList.add(prob.getEvents().get(i));
-        }
+        this.eventList = prob.getEvents();
     }
 
-    public ArrayList<Event> getEventList() {
+    public List<Event> getEventList() {
         return this.eventList;
     }
 
@@ -28,9 +24,13 @@ public class Solution {
                 return false;
             }
         }
-
-        //Check if event can Take place in that Room (number of Attendees and feature check) - TO DO
-
+/*
+        //Check if event can Take place in that Room (number of Attendees and feature check)
+        if(this.eventList.get(eventId).hasAcceptableRoom(room) == false) {
+            System.out.println("Can't allocate event: " + eventId + ", no acceptable room");
+            return false;
+        }
+*/
         //Set event Time Slot and Room
         eventList.get(eventId).setRoom(room);
         eventList.get(eventId).setTimeSlot(timeSlot);
