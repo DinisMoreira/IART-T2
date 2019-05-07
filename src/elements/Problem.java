@@ -4,6 +4,7 @@ import java.util.List;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Problem {
@@ -194,5 +195,110 @@ public class Problem {
             if(room.getFeatures().contains(feature) == false)
                 return false;
         return true;
+    }
+
+    public ArrayList<Student> getStudentsForEvent(int eventId){
+        ArrayList<Student> studList = new ArrayList<Student>();
+
+
+        for(int s = 0; s < students.size(); s++){
+            if(studentEvents.get(s).get(eventId)){
+                Student stud = students.get(s);
+                studList.add(stud);
+            }
+        }
+
+        return studList;
+    }
+
+    public ArrayList<Event> getEventsForStudent(int studId){
+        ArrayList<Event> eventList = new ArrayList<Event>();
+
+        for(int e = 0; e < events.size(); e++){
+            if(studentEvents.get(studId).get(e)){
+                Event event = events.get(e);
+                eventList.add(event);
+            }
+        }
+
+        return eventList;
+    }
+
+
+
+    public void showProblem(){
+
+        ArrayList<Event> eventList = new ArrayList<Event>();
+        List<Integer> features = new ArrayList<Integer>();
+
+
+        System.out.println();
+        System.out.println("Number of Students: " + students.size());
+        System.out.println();
+        
+
+        for(int s = 0; s < students.size(); s++){
+            eventList = getEventsForStudent(s);
+
+            if(eventList.size() > 0){
+                System.out.print("Student " + s + " goes to events: ");
+
+                for(Event e : eventList){
+                    System.out.print(e.getID() + " ");
+                }
+
+
+            }
+            
+            else{
+                System.out.print("Student " + s + " does not attend any event");
+            }
+            System.out.println();
+            
+        }
+
+        System.out.println();
+        System.out.println("Number of Rooms: " + rooms.size());
+        System.out.println();
+
+        for(int r = 0; r < rooms.size(); r++){
+            features = rooms.get(r).getFeatures();
+
+            if(features.size() > 0){
+                System.out.print("Room " + r + " as features: " );
+
+                for(int f : features){
+                    System.out.print(f + " ");
+                }
+            }
+            
+            else{
+                System.out.print("Room " + r + " does not have any features");
+            }
+            System.out.println();
+            
+        }
+
+        
+        System.out.println();
+        System.out.println("Number of Events: " + events.size());
+        System.out.println();
+
+        for(int e = 0; e < events.size(); e++){
+            features = events.get(e).getRequiredFeatures();
+
+            if(features.size() > 0){
+                System.out.print("Event " + e + " requires features: " );
+
+                for(int f : features){
+                    System.out.print(f + " ");
+                }
+            }
+            else{
+                System.out.print("Event " + e + " does not require any features");
+            }
+            System.out.println();
+        }
+
     }
 }
