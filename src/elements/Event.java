@@ -21,6 +21,7 @@ public class Event {
         this.attendeesNum = 0;
         this.requiredFeatures = new ArrayList<>();
 
+        this.timeSlot = -1;
         this.acceptableRooms = new ArrayList<>();
     }
 
