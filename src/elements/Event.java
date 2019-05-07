@@ -17,6 +17,7 @@ public class Event {
 
     public Event(int id) {
         this.id = id;
+        this.attendeesNum = 0;
         this.requiredFeatures = new ArrayList<>();
     }
 
@@ -58,6 +59,13 @@ public class Event {
         this.room = room;
     }
 
+    public void setAttendeesNum(int attendeesNum) {
+        this.attendeesNum = attendeesNum;
+    }
+
+    public int getAttendeesNum() {
+        return this.attendeesNum;
+    }
 
     @Override
     public boolean equals(Object e) {
