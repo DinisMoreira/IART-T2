@@ -8,7 +8,8 @@ public class Event {
     private int id;
     private List<Integer> requiredFeatures;
  
-    private int attendeesNum; // TO DO
+    private List<Room> acceptableRooms;
+    private int attendeesNum;
     
 
     //Solution Parameters
@@ -19,6 +20,8 @@ public class Event {
         this.id = id;
         this.attendeesNum = 0;
         this.requiredFeatures = new ArrayList<>();
+
+        this.acceptableRooms = new ArrayList<>();
     }
 
     public Boolean hasFeature(int feature) {
@@ -31,6 +34,19 @@ public class Event {
     public void addFeature(int feature) {
         if(hasFeature(feature) == false)
             this.requiredFeatures.add(feature);
+    }
+
+    
+    public Boolean hasAcceptableRoom(Room room) {
+        for(Room r : this.acceptableRooms)
+            if(r == room)
+                return true;
+        return false;
+    }
+
+    public void addAcceptableRoom(Room room) {
+        if(hasAcceptableRoom(room) == false)
+            this.acceptableRooms.add(room);
     }
 
 
