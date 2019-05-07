@@ -4,9 +4,7 @@ import java.util.List;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.HashMap;
 
 public class Problem {
 
@@ -177,6 +175,16 @@ public class Problem {
         }
         System.out.println("WARNING: Bad file values");
 
+        // Add to Event all acceptable Rooms
+        for(Event event : this.events) {
+            for(Room room : this.rooms) {
+                final Boolean attendeeCheck = room.getSize() >= event.getAttendeesNum();
+                final Boolean featuresCheck = roomHasRequiredFeatures(room, event);
+                if(attendeeCheck && featuresCheck) {
+                    event.addAcceptableRoom(room);
+                }
+            }
+        }
         
     }
 
