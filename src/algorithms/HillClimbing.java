@@ -26,6 +26,9 @@ public class HillClimbing{
         System.out.println("Event 0 - Time Slot: " + sol.getEventList().get(0).getTimeSlot() + " / Room: " + sol.getEventList().get(0).getRoom().getID());
         System.out.println("Event 1 - Time Slot: " + sol.getEventList().get(1).getTimeSlot() + " / Room: " + sol.getEventList().get(1).getRoom().getID());
 
+        sol.generateRandomSolution();
+
+        
     }
 
 

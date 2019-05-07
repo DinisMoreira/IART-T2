@@ -2,13 +2,16 @@ package elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Solution {
     private List<Event> eventList;
+    private Problem prob;
 
 
     public Solution(Problem prob){
         this.eventList = prob.getEvents();
+        this.prob = prob;
     }
 
     public List<Event> getEventList() {
@@ -37,6 +40,17 @@ public class Solution {
         System.out.println("Allocated event " + eventId);
         return true;
 
+    }
+
+
+    public void generateRandomSolution(){
+        Random rand = new Random();
+        
+        int timeSlot = rand.nextInt(prob.getTimeSlots());
+        int room = rand.nextInt(prob.getRooms().size());
+
+        System.out.println("timeSlot: " + timeSlot);
+        System.out.println("room: " + room);
     }
 
 
