@@ -91,17 +91,18 @@ public class Problem {
             this.events.add(event);
     }
 
-    public void addStudentEventRelation(Student student, Event event) {
+    public Boolean addStudentEventRelation(Student student, Event event) {
         if(this.students.contains(student) == false){
             System.out.println("Can't add student/event relation, student with id " + student.getID() + " doen not exist");
-            return;
+            return false;
         }
         if(this.events.contains(event) == false){
             System.out.println("Can't add student/event relation, event with id " + event.getID() + " doen not exist");
-            return;
+            return false;
         }
 
         this.studentEvents.get(student.getID()).set(event.getID(), true);
+        return true;
     }
     
 
@@ -144,7 +145,9 @@ public class Problem {
         for(int s = 0; s < numStudents; s++){
             for(int e = 0; e < numEvents; e++){
                 if(fi.nextInt() == 1){
-                    addStudentEventRelation(this.students.get(s), this.events.get(e));
+                    final Event event = this.events.get(e);
+                    if(addStudentEventRelation(this.students.get(s), event) == true)
+                        event.setAttendeesNum(event.getAttendeesNum() +1);
                 }
             }
         }
@@ -177,9 +180,6 @@ public class Problem {
         
     }
 
-    private void setNumberOfAttendeesInEvents(){
-        //TO DO
-    }
 
     private Boolean roomHasRequiredFeatures(Room room, Event event) {
         for(int feature : event.getRequiredFeatures())
