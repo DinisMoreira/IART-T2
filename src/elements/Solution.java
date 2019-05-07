@@ -1,12 +1,10 @@
 package elements;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Solution {
     private ArrayList<Event> eventList;
 
-    private Map<Event, ArrayList<Room>> eventPossibleRooms; //TO DO
 
 
     public Solution(Problem prob){
