@@ -138,8 +138,6 @@ public class Problem {
             this.rooms.add(room);
         }
 
-        
-        
         //Add student Event relations
         for(int s = 0; s < numStudents; s++){
             for(int e = 0; e < numEvents; e++){
@@ -227,7 +225,6 @@ public class Problem {
 
 
     public void showProblem(){
-
         ArrayList<Event> eventList = new ArrayList<Event>();
         List<Integer> features = new ArrayList<Integer>();
 
@@ -246,15 +243,12 @@ public class Problem {
                 for(Event e : eventList){
                     System.out.print(e.getID() + " ");
                 }
-
-
             }
             
             else{
                 System.out.print("Student " + s + " does not attend any event");
             }
             System.out.println();
-            
         }
 
         System.out.println();
@@ -299,6 +293,5 @@ public class Problem {
             }
             System.out.println();
         }
-
     }
 }

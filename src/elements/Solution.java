@@ -77,7 +77,6 @@ public class Solution {
 
 
         for(Event e : eventList){
-            //Grandes problemas com hard constraitns, fazer outra função que alloca sem verificar hard constraints
             while(numTries < prob.getTimeSlots() * prob.getRooms().size()){
 
                 success = allocateEventHard(e.getID(), timeSlot, prob.getRooms().get(roomId));
