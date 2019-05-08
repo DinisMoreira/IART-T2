@@ -26,14 +26,14 @@ public class Solution {
         //Check if event in that time slot and room already exists
         for(Event e : eventList){               
             if(e.getTimeSlot() == timeSlot && e.getRoom().getID() == room.getID()){
-                System.out.println("Can't allocate event: " + eventId + " / Time slot " + timeSlot + " in room " + room.getID() + " is already occupied");
+                //System.out.println("Can't allocate event: " + eventId + " / Time slot " + timeSlot + " in room " + room.getID() + " is already occupied");
                 return false;
             }
         }
 
         //Check if event can Take place in that Room (number of Attendees and feature check)
         if(this.eventList.get(eventId).hasAcceptableRoom(room) == false) {
-            System.out.println("Can't allocate event: " + eventId + " / Room " + room.getID() + " not acceptable");
+            //System.out.println("Can't allocate event: " + eventId + " / Room " + room.getID() + " not acceptable");
             return false;
         }
 
@@ -44,7 +44,7 @@ public class Solution {
                 studEventList = prob.getEventsForStudent(s.getID());
                 for(Event e : studEventList){
                     if(e.getTimeSlot() == timeSlot){
-                        System.out.println("Can't allocate event: " + eventId + " / Student " + s.getID() + " already attends event " + e.getID() + " at the same time slot: " + e.getTimeSlot());
+                        //System.out.println("Can't allocate event: " + eventId + " / Student " + s.getID() + " already attends event " + e.getID() + " at the same time slot: " + e.getTimeSlot());
                         return false;
                     }
                 }
@@ -53,11 +53,18 @@ public class Solution {
         //Set event Time Slot and Room
         this.eventList.get(eventId).setRoom(room);
         this.eventList.get(eventId).setTimeSlot(timeSlot);
-        System.out.println("Allocated event " + eventId);
+        System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot);
         return true;
 
     }
 
+
+    public boolean allocateEventNoConstraints(int eventId, int timeSlot, Room room){
+        this.eventList.get(eventId).setRoom(room);
+        this.eventList.get(eventId).setTimeSlot(timeSlot);
+        System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot + " (No constraints)");
+        return true;
+    }
 
     public void generateRandomSolution(){
         Random rand = new Random();
@@ -65,17 +72,34 @@ public class Solution {
         int timeSlot = rand.nextInt(prob.getTimeSlots());
         int roomId = rand.nextInt(prob.getRooms().size());
 
+        int numTries = 0;
+        boolean success = false;
+
 
         for(Event e : eventList){
             //Grandes problemas com hard constraitns, fazer outra função que alloca sem verificar hard constraints
-            while(!allocateEventHard(e.getID(), timeSlot, prob.getRooms().get(roomId))){
+            while(numTries < prob.getTimeSlots() * prob.getRooms().size()){
+
+                success = allocateEventHard(e.getID(), timeSlot, prob.getRooms().get(roomId));
+
+                if(success)
+                    break;
 
                 timeSlot = rand.nextInt(prob.getTimeSlots());
                 roomId = rand.nextInt(prob.getRooms().size());
+
+                numTries++;
+            }
+
+            if(!success){
+                success = allocateEventNoConstraints(e.getID(), timeSlot, prob.getRooms().get(roomId));
             }
 
             timeSlot = rand.nextInt(prob.getTimeSlots());
             roomId = rand.nextInt(prob.getRooms().size());
+
+            numTries = 0;
+            success = false;
         }
     }
 
