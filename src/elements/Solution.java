@@ -19,7 +19,7 @@ public class Solution {
     }
 
 
-    public boolean allocateEventHard(int eventId, int timeSlot, Room room){
+    public boolean allocateEventHardConstraints(int eventId, int timeSlot, Room room){
         ArrayList<Student> studList = new ArrayList<Student>();
         ArrayList<Event> studEventList = new ArrayList<Event>();
 
@@ -38,17 +38,17 @@ public class Solution {
         }
 
         //Check if any student attends any other event in the same timeslot
-            studList = prob.getStudentsForEvent(eventId);
+        studList = prob.getStudentsForEvent(eventId);
 
-            for(Student s : studList){
-                studEventList = prob.getEventsForStudent(s.getID());
-                for(Event e : studEventList){
-                    if(e.getTimeSlot() == timeSlot){
-                        //System.out.println("Can't allocate event: " + eventId + " / Student " + s.getID() + " already attends event " + e.getID() + " at the same time slot: " + e.getTimeSlot());
-                        return false;
-                    }
+        for(Student s : studList){
+            studEventList = prob.getEventsForStudent(s.getID());
+            for(Event e : studEventList){
+                if(e.getTimeSlot() == timeSlot){
+                    //System.out.println("Can't allocate event: " + eventId + " / Student " + s.getID() + " already attends event " + e.getID() + " at the same time slot: " + e.getTimeSlot());
+                    return false;
                 }
             }
+        }
 
         //Set event Time Slot and Room
         this.eventList.get(eventId).setRoom(room);
@@ -59,11 +59,19 @@ public class Solution {
     }
 
 
-    public boolean allocateEventNoConstraints(int eventId, int timeSlot, Room room){
+    public boolean allocateEventNoConstraints(int eventId, int timeSlot, Room room){        
         this.eventList.get(eventId).setRoom(room);
         this.eventList.get(eventId).setTimeSlot(timeSlot);
-        System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot + " (No constraints)");
+        System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot + " (No constraints checked)");
         return true;
+    }
+
+    public void allocateEventToAcceptableRoom(int eventId, int timeSlot){
+        for(Room r : prob.getRooms()){
+            if(this.eventList.get(eventId).hasAcceptableRoom(r) == true) {
+                allocateEventNoConstraints(eventId, timeSlot, r);
+            }
+        }
     }
 
     public void generateRandomSolution(){
@@ -79,7 +87,7 @@ public class Solution {
         for(Event e : eventList){
             while(numTries < prob.getTimeSlots() * prob.getRooms().size()){
 
-                success = allocateEventHard(e.getID(), timeSlot, prob.getRooms().get(roomId));
+                success = allocateEventHardConstraints(e.getID(), timeSlot, prob.getRooms().get(roomId));
 
                 if(success)
                     break;
@@ -91,7 +99,7 @@ public class Solution {
             }
 
             if(!success){
-                success = allocateEventNoConstraints(e.getID(), timeSlot, prob.getRooms().get(roomId));
+                allocateEventToAcceptableRoom(e.getID(), timeSlot);
             }
 
             timeSlot = rand.nextInt(prob.getTimeSlots());
@@ -100,6 +108,78 @@ public class Solution {
             numTries = 0;
             success = false;
         }
+    }
+
+    public int getNumberOfHardInfractions(){
+        int sum = 0;
+
+        sum += getNumberConflictingEvents();
+        sum += getNumberOfEventsWithBadRoom();
+        sum += getNumberofConflictingStudSchedules();
+
+        return sum;
+    }
+
+    public int getNumberConflictingEvents(){ //2 - Dinis
+        //TO DO
+        return 0;
+    }
+
+    public int getNumberOfEventsWithBadRoom(){//1 - Dinis
+        //TO DO
+        return 0;
+    }
+
+    public int getNumberofConflictingStudSchedules(){//2 - Dinis
+        //TO DO
+        return 0;
+    }
+
+
+
+    public int getNumberOfSoftInfractions(){
+        int sum = 0;
+
+        sum += getTotalDaysWithOneClass();
+        sum += getTotalDaysWith2MoreConsClasses();
+        sum += getTotalDaysWithLastClass();
+
+        return sum;
+    }
+
+    public int getStudDaysWithOneClass(Student stud){ //2 - Dinis
+        //TO DO
+        return 0;
+    }
+
+    public int getStudDaysWith2MoreConsClasses(Student stud){//3 - Miguel
+        //TO DO
+        return 0;
+    }
+
+    public int getStudDaysWithLastClass(Student stud){//2 - Miguel
+        //TO DO
+        return 0;
+    }
+
+
+    public int getTotalDaysWithOneClass(){//1 - Diogo
+        //TO DO
+        return 0;
+    }
+
+    public int getTotalDaysWith2MoreConsClasses(){//1 - Diogo
+        //TO DO
+        return 0;
+    }
+
+    public int getTotalDaysWithLastClass(){//1 - Diogo
+        //TO DO
+        return 0;
+    }
+
+    public void createSolutionFile(){//2 - Diogo
+        //TO DO
     }
 
     public void showSolutionOrderedByEventId(){
