@@ -147,7 +147,7 @@ public class Solution {
         return sum;
     }
 
-    public int getStudDaysWithOneClass(Student stud){ //2 - Dinis
+    public int getStudDaysWithOneClass(Student stud){ //2 - Diogo
         //TO DO
         return 0;
     }
@@ -157,29 +157,25 @@ public class Solution {
         return 0;
     }
 
-    public int getStudDaysWithLastClass(Student stud){//2 - Miguel
+    public int getStudDaysWithLastClass(Student stud){//2 - Diogo
         //TO DO
         return 0;
     }
 
 
-    public int getTotalDaysWithOneClass(){//1 - Diogo
+    public int getTotalDaysWithOneClass(){//1 - Miguel
         //TO DO
         return 0;
     }
 
-    public int getTotalDaysWith2MoreConsClasses(){//1 - Diogo
+    public int getTotalDaysWith2MoreConsClasses(){//1 - Miguel
         //TO DO
         return 0;
     }
 
-    public int getTotalDaysWithLastClass(){//1 - Diogo
+    public int getTotalDaysWithLastClass(){//1 - Miguel
         //TO DO
         return 0;
-    }
-
-    public void createSolutionFile(){//2 - Diogo
-        //TO DO
     }
 
     public void showSolutionOrderedByEventId(){
