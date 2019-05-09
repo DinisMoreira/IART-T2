@@ -33,7 +33,9 @@ public class HillClimbing{
         
         sol.generateRandomSolution();
 
-        sol.getNumberConflictingEvents();
+        int numHardInfrac = sol.getNumberOfHardInfractions();
+
+        System.out.println("Num Hard Infrac. = " + numHardInfrac);
 
         return sol;
     }

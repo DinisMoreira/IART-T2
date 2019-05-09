@@ -132,18 +132,43 @@ public class Solution {
         }
 
         sum = sum/2;
-
         return sum;
     }
 
     public int getNumberOfEventsWithBadRoom(){//1 - Dinis
-        //TO DO
-        return 0;
+        int sum = 0;
+
+        for(Event e : eventList){
+            if(e.hasAcceptableRoom(e.getRoom()) == false) {
+                sum++;
+            }
+        }
+
+        return sum;
     }
 
     public int getNumberofConflictingStudSchedules(){//2 - Dinis
-        //TO DO
-        return 0;
+        ArrayList<Student> studList = new ArrayList<Student>();
+        ArrayList<Event> studEventList = new ArrayList<Event>();
+
+        int sum = 0;
+
+        for(Event e1 : eventList){
+
+            studList = prob.getStudentsForEvent(e1.getID());
+
+            for(Student s : studList){
+                studEventList = prob.getEventsForStudent(s.getID());
+                for(Event e2 : studEventList){
+                    if(e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot()){
+                        sum++;
+                    }
+                }
+            }
+        }
+
+        sum = sum/2;
+        return sum;
     }
 
 
