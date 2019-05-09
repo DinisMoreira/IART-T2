@@ -122,7 +122,22 @@ public class Solution {
 
     public int getNumberConflictingEvents(){ //2 - Dinis
         //TO DO
-        return 0;
+        int sum = 0;
+
+        for(Event e1 : eventList){
+            for(Event e2 : eventList){               
+                if(e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot() && e1.getRoom().getID() == e2.getRoom().getID()){
+                    sum++;
+                }
+            }
+        }
+
+        System.out.println("Sum x 2 = " + sum);
+        sum = sum/2;
+        
+        System.out.println("Sum = " + sum);
+
+        return sum;
     }
 
     public int getNumberOfEventsWithBadRoom(){//1 - Dinis

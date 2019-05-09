@@ -25,9 +25,11 @@ public class Main {
 
 
         HillClimbing hc = new HillClimbing(prob);
-        hc.getSolution();
+        Solution sol = hc.getSolution();
 
-        hc.outputSolutionToFile("../solutions/" + fileName + ".sln");
+        
+
+        //hc.outputSolutionToFile("../solutions/" + fileName + ".sln");
     }
 
 

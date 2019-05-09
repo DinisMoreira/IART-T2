@@ -17,7 +17,7 @@ public class HillClimbing{
     }
 
 
-    public void getSolution(){
+    public Solution getSolution(){
         Solution sol = new Solution(prob);
 
         ArrayList<Student> studList;
@@ -27,11 +27,15 @@ public class HillClimbing{
         /*TESTING STUFF*/
         System.out.println();
 
-//      System.out.println("Event 0 - Time Slot: " + sol.getEventList().get(0).getTimeSlot() + " / Room: " + sol.getEventList().get(0).getRoom().getID());
-        System.out.println("Event 1 - Time Slot: " + sol.getEventList().get(1).getTimeSlot() + " / Room: " + sol.getEventList().get(1).getRoom().getID());
+        //System.out.println("Event 0 - Time Slot: " + sol.getEventList().get(0).getTimeSlot() + " / Room: " + sol.getEventList().get(0).getRoom().getID());
+        //System.out.println("Event 1 - Time Slot: " + sol.getEventList().get(1).getTimeSlot() + " / Room: " + sol.getEventList().get(1).getRoom().getID());
         //sol.showSolutionOrderedByEventId();
         
         sol.generateRandomSolution();
+
+        sol.getNumberConflictingEvents();
+
+        return sol;
     }
 
     public void outputSolutionToFile(String fileName) {
