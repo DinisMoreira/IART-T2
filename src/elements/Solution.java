@@ -121,7 +121,6 @@ public class Solution {
     }
 
     public int getNumberConflictingEvents(){ //2 - Dinis
-        //TO DO
         int sum = 0;
 
         for(Event e1 : eventList){
@@ -132,10 +131,7 @@ public class Solution {
             }
         }
 
-        System.out.println("Sum x 2 = " + sum);
         sum = sum/2;
-        
-        System.out.println("Sum = " + sum);
 
         return sum;
     }
