@@ -1,5 +1,9 @@
 package algorithms;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 import elements.*;
 import java.util.ArrayList;
 
@@ -20,13 +24,29 @@ public class HillClimbing{
         ArrayList<Event> eventList;
 
 
-
         /*TESTING STUFF*/
         System.out.println();
-        sol.generateRandomSolution();
-        //sol.showSolutionOrderedByEventId();
 
+//      System.out.println("Event 0 - Time Slot: " + sol.getEventList().get(0).getTimeSlot() + " / Room: " + sol.getEventList().get(0).getRoom().getID());
+        System.out.println("Event 1 - Time Slot: " + sol.getEventList().get(1).getTimeSlot() + " / Room: " + sol.getEventList().get(1).getRoom().getID());
+        //sol.showSolutionOrderedByEventId();
+        
+        sol.generateRandomSolution();
     }
 
+    public void outputSolutionToFile(String fileName) {
+        File file = new File(fileName);
+        PrintWriter printWriter;
+        try {
+            printWriter = new PrintWriter(file);
+        } catch(FileNotFoundException e) {return;}
+        for(Event e : this.prob.getEvents()) {
+            //Pad number with max of 4 spaces
+            printWriter.printf("%4d %4d\n",
+                e.getTimeSlot(),
+                ((e.getRoom() == null) ? -1 : e.getRoom().getID()));
+        }
+        printWriter.close();
+    }
 
 }

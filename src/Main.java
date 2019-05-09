@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Scanner;
 
 import algorithms.HillClimbing;
 import elements.*;
@@ -7,8 +6,6 @@ import elements.*;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scn = new Scanner(System.in);
-        // System.out.println("What is the name of the problem file?");
         String fileName;// = scn.nextLine();
 
         fileName = args[0];
@@ -29,7 +26,8 @@ public class Main {
 
         HillClimbing hc = new HillClimbing(prob);
         hc.getSolution();
-        
+
+        hc.outputSolutionToFile("../solutions/" + fileName + ".sln");
     }
 
 
