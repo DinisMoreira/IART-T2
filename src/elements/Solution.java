@@ -124,21 +124,55 @@ public class Solution {
     }
 
     public int getNumberConflictingEvents(){ //2 - Dinis
-        //TO DO
-        return 0;
+        int sum = 0;
+
+        for(Event e1 : eventList){
+            for(Event e2 : eventList){               
+                if(e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot() && e1.getRoom().getID() == e2.getRoom().getID()){
+                    sum++;
+                }
+            }
+        }
+
+        sum = sum/2;
+        return sum;
     }
 
     public int getNumberOfEventsWithBadRoom(){//1 - Dinis
-        //TO DO
-        return 0;
+        int sum = 0;
+
+        for(Event e : eventList){
+            if(e.hasAcceptableRoom(e.getRoom()) == false) {
+                sum++;
+            }
+        }
+
+        return sum;
     }
 
     public int getNumberofConflictingStudSchedules(){//2 - Dinis
-        //TO DO
-        return 0;
+        ArrayList<Student> studList = new ArrayList<Student>();
+        ArrayList<Event> studEventList = new ArrayList<Event>();
+
+        int sum = 0;
+
+        for(Event e1 : eventList){
+
+            studList = prob.getStudentsForEvent(e1.getID());
+
+            for(Student s : studList){
+                studEventList = prob.getEventsForStudent(s.getID());
+                for(Event e2 : studEventList){
+                    if(e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot()){
+                        sum++;
+                    }
+                }
+            }
+        }
+
+        sum = sum/2;
+        return sum;
     }
-
-
 
     public int getNumberOfSoftInfractions(){
         int sum = 0;
@@ -150,8 +184,8 @@ public class Solution {
         return sum;
     }
 
-    public int getStudDaysWithOneClass(Student student){ //2 - Dinis
-        //TO DO
+    public int getStudDaysWithOneClass(Student student){ //2 - Diogo
+        // TODO
         return 0;
     }
 
@@ -175,19 +209,6 @@ public class Solution {
         return counter;
     }
 
-    private int getEventIDFromTimeslot(Student student, int timeslot) {
-        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
-
-        for(int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
-            final Boolean isRegistrated = studentEvents.get(eventIterator);
-            final int eventSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
-            if(isRegistrated && eventSlot == timeslot)
-                return this.prob.getEvents().get(eventIterator).getID();
-        }
-
-        return -1;
-    }
-
     public int getStudDaysWithLastClass(Student student){
         int counter = 0;
         final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
@@ -195,7 +216,8 @@ public class Solution {
         for(int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++)
             if(studentEvents.get(eventIterator) == true) {
                 final int timeSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
-                if(timeSlot == -1) //Dont analyse if timeslot is not defined
+                //Dont analyse if timeslot is not defined
+                if(timeSlot == -1)
                     continue;
                 if((timeSlot +1) % Problem.hoursPerDay == 0) //Add 1 since timeslots start at 0
                     counter++;
@@ -204,19 +226,31 @@ public class Solution {
     }
 
 
-    public int getTotalDaysWithOneClass(){//1 - Diogo
-        //TO DO
-        return 0;
+    public int getTotalDaysWithOneClass(){
+        int counter = 0;
+
+        for(Student student : this.prob.getStudents())
+            counter += getStudDaysWithOneClass(student);
+
+        return counter;
     }
 
-    public int getTotalDaysWith2MoreConsClasses(){//1 - Diogo
-        //TO DO
-        return 0;
+    public int getTotalDaysWith2MoreConsClasses(){
+        int counter = 0;
+
+        for(Student student : this.prob.getStudents())
+            counter += getStudDaysWith2MoreConsClasses(student);
+
+        return counter;
     }
 
-    public int getTotalDaysWithLastClass(){//1 - Diogo
-        //TO DO
-        return 0;
+    public int getTotalDaysWithLastClass(){
+        int counter = 0;
+
+        for(Student student : this.prob.getStudents())
+            counter += getStudDaysWithLastClass(student);
+
+        return counter;        
     }
 
     public void outputSolutionToFile(String fileName) {
@@ -234,6 +268,7 @@ public class Solution {
         printWriter.close();
     }
 
+
     public void showSolutionOrderedByEventId(){
         for(Event e : eventList){
             System.out.println();
@@ -243,5 +278,18 @@ public class Solution {
         }
     }
 
+
+    private int getEventIDFromTimeslot(Student student, int timeslot) {
+        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
+
+        for(int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
+            final Boolean isRegistrated = studentEvents.get(eventIterator);
+            final int eventSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
+            if(isRegistrated && eventSlot == timeslot)
+                return this.prob.getEvents().get(eventIterator).getID();
+        }
+
+        return -1;
+    }
 
 }

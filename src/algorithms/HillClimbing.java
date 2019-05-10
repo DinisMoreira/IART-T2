@@ -12,8 +12,7 @@ public class HillClimbing{
         this.prob = p;
     }
 
-
-    public void getSolution(String outputPath){
+    public Solution getSolution(){
         Solution sol = new Solution(prob);
 
         ArrayList<Student> studList;
@@ -23,12 +22,17 @@ public class HillClimbing{
         /*TESTING STUFF*/
         System.out.println();
 
-//      System.out.println("Event 0 - Time Slot: " + sol.getEventList().get(0).getTimeSlot() + " / Room: " + sol.getEventList().get(0).getRoom().getID());
-        System.out.println("Event 1 - Time Slot: " + sol.getEventList().get(1).getTimeSlot() + " / Room: " + sol.getEventList().get(1).getRoom().getID());
+        //System.out.println("Event 0 - Time Slot: " + sol.getEventList().get(0).getTimeSlot() + " / Room: " + sol.getEventList().get(0).getRoom().getID());
+        //System.out.println("Event 1 - Time Slot: " + sol.getEventList().get(1).getTimeSlot() + " / Room: " + sol.getEventList().get(1).getRoom().getID());
         //sol.showSolutionOrderedByEventId();
         
         sol.generateRandomSolution();
-        sol.outputSolutionToFile(outputPath);
+
+        int numHardInfrac = sol.getNumberOfHardInfractions();
+
+        System.out.println("Num Hard Infrac. = " + numHardInfrac);
+
+        return sol;
     }
 
 }
