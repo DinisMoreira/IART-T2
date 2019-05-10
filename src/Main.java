@@ -20,15 +20,11 @@ public class Main {
             System.out.println("File Not Found");
         }
 
-        
         prob.showProblem();
-
 
         HillClimbing hc = new HillClimbing(prob);
         Solution solution = hc.getSolution();
         solution.outputSolutionToFile("../solutions/" + fileName + ".sln");
     }
-
-  
 
 }

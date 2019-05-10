@@ -11,8 +11,7 @@ public class Solution {
     private List<Event> eventList;
     private Problem prob;
 
-
-    public Solution(Problem prob){
+    public Solution(Problem prob) {
         this.eventList = prob.getEvents();
         this.prob = prob;
     }
@@ -21,39 +20,43 @@ public class Solution {
         return this.eventList;
     }
 
-
-    public boolean allocateEventHardConstraints(int eventId, int timeSlot, Room room){
+    public boolean allocateEventHardConstraints(int eventId, int timeSlot, Room room) {
         ArrayList<Student> studList = new ArrayList<Student>();
         ArrayList<Event> studEventList = new ArrayList<Event>();
 
-        //Check if event in that time slot and room already exists
-        for(Event e : eventList){               
-            if(e.getTimeSlot() == timeSlot && e.getRoom().getID() == room.getID()){
-                //System.out.println("Can't allocate event: " + eventId + " / Time slot " + timeSlot + " in room " + room.getID() + " is already occupied");
+        // Check if event in that time slot and room already exists
+        for (Event e : eventList) {
+            if (e.getTimeSlot() == timeSlot && e.getRoom().getID() == room.getID()) {
+                // System.out.println("Can't allocate event: " + eventId + " / Time slot " +
+                // timeSlot + " in room " + room.getID() + " is already occupied");
                 return false;
             }
         }
 
-        //Check if event can Take place in that Room (number of Attendees and feature check)
-        if(this.eventList.get(eventId).hasAcceptableRoom(room) == false) {
-            //System.out.println("Can't allocate event: " + eventId + " / Room " + room.getID() + " not acceptable");
+        // Check if event can Take place in that Room (number of Attendees and feature
+        // check)
+        if (this.eventList.get(eventId).hasAcceptableRoom(room) == false) {
+            // System.out.println("Can't allocate event: " + eventId + " / Room " +
+            // room.getID() + " not acceptable");
             return false;
         }
 
-        //Check if any student attends any other event in the same timeslot
+        // Check if any student attends any other event in the same timeslot
         studList = prob.getStudentsForEvent(eventId);
 
-        for(Student s : studList){
+        for (Student s : studList) {
             studEventList = prob.getEventsForStudent(s.getID());
-            for(Event e : studEventList){
-                if(e.getTimeSlot() == timeSlot){
-                    //System.out.println("Can't allocate event: " + eventId + " / Student " + s.getID() + " already attends event " + e.getID() + " at the same time slot: " + e.getTimeSlot());
+            for (Event e : studEventList) {
+                if (e.getTimeSlot() == timeSlot) {
+                    // System.out.println("Can't allocate event: " + eventId + " / Student " +
+                    // s.getID() + " already attends event " + e.getID() + " at the same time slot:
+                    // " + e.getTimeSlot());
                     return false;
                 }
             }
         }
 
-        //Set event Time Slot and Room
+        // Set event Time Slot and Room
         this.eventList.get(eventId).setRoom(room);
         this.eventList.get(eventId).setTimeSlot(timeSlot);
         System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot);
@@ -61,38 +64,37 @@ public class Solution {
 
     }
 
-
-    public boolean allocateEventNoConstraints(int eventId, int timeSlot, Room room){        
+    public boolean allocateEventNoConstraints(int eventId, int timeSlot, Room room) {
         this.eventList.get(eventId).setRoom(room);
         this.eventList.get(eventId).setTimeSlot(timeSlot);
-        System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot + " (No constraints checked)");
+        System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot
+                + " (No constraints checked)");
         return true;
     }
 
-    public void allocateEventToAcceptableRoom(int eventId, int timeSlot){
-        for(Room r : prob.getRooms()){
-            if(this.eventList.get(eventId).hasAcceptableRoom(r) == true) {
+    public void allocateEventToAcceptableRoom(int eventId, int timeSlot) {
+        for (Room r : prob.getRooms()) {
+            if (this.eventList.get(eventId).hasAcceptableRoom(r) == true) {
                 allocateEventNoConstraints(eventId, timeSlot, r);
             }
         }
     }
 
-    public void generateRandomSolution(){
+    public void generateRandomSolution() {
         Random rand = new Random();
-        
+
         int timeSlot = rand.nextInt(prob.getTimeSlots());
         int roomId = rand.nextInt(prob.getRooms().size());
 
         int numTries = 0;
         boolean success = false;
 
-
-        for(Event e : eventList){
-            while(numTries < prob.getTimeSlots() * prob.getRooms().size()){
+        for (Event e : eventList) {
+            while (numTries < prob.getTimeSlots() * prob.getRooms().size()) {
 
                 success = allocateEventHardConstraints(e.getID(), timeSlot, prob.getRooms().get(roomId));
 
-                if(success)
+                if (success)
                     break;
 
                 timeSlot = rand.nextInt(prob.getTimeSlots());
@@ -101,7 +103,7 @@ public class Solution {
                 numTries++;
             }
 
-            if(!success){
+            if (!success) {
                 allocateEventToAcceptableRoom(e.getID(), timeSlot);
             }
 
@@ -113,7 +115,7 @@ public class Solution {
         }
     }
 
-    public int getNumberOfHardInfractions(){
+    public int getNumberOfHardInfractions() {
         int sum = 0;
 
         sum += getNumberConflictingEvents();
@@ -123,26 +125,27 @@ public class Solution {
         return sum;
     }
 
-    public int getNumberConflictingEvents(){ //2 - Dinis
+    public int getNumberConflictingEvents() { // 2 - Dinis
         int sum = 0;
 
-        for(Event e1 : eventList){
-            for(Event e2 : eventList){               
-                if(e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot() && e1.getRoom().getID() == e2.getRoom().getID()){
+        for (Event e1 : eventList) {
+            for (Event e2 : eventList) {
+                if (e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot()
+                        && e1.getRoom().getID() == e2.getRoom().getID()) {
                     sum++;
                 }
             }
         }
 
-        sum = sum/2;
+        sum = sum / 2;
         return sum;
     }
 
-    public int getNumberOfEventsWithBadRoom(){//1 - Dinis
+    public int getNumberOfEventsWithBadRoom() {// 1 - Dinis
         int sum = 0;
 
-        for(Event e : eventList){
-            if(e.hasAcceptableRoom(e.getRoom()) == false) {
+        for (Event e : eventList) {
+            if (e.hasAcceptableRoom(e.getRoom()) == false) {
                 sum++;
             }
         }
@@ -150,31 +153,31 @@ public class Solution {
         return sum;
     }
 
-    public int getNumberofConflictingStudSchedules(){//2 - Dinis
+    public int getNumberofConflictingStudSchedules() {// 2 - Dinis
         ArrayList<Student> studList = new ArrayList<Student>();
         ArrayList<Event> studEventList = new ArrayList<Event>();
 
         int sum = 0;
 
-        for(Event e1 : eventList){
+        for (Event e1 : eventList) {
 
             studList = prob.getStudentsForEvent(e1.getID());
 
-            for(Student s : studList){
+            for (Student s : studList) {
                 studEventList = prob.getEventsForStudent(s.getID());
-                for(Event e2 : studEventList){
-                    if(e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot()){
+                for (Event e2 : studEventList) {
+                    if (e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot()) {
                         sum++;
                     }
                 }
             }
         }
 
-        sum = sum/2;
+        sum = sum / 2;
         return sum;
     }
 
-    public int getNumberOfSoftInfractions(){
+    public int getNumberOfSoftInfractions() {
         int sum = 0;
 
         sum += getTotalDaysWithOneClass();
@@ -184,73 +187,112 @@ public class Solution {
         return sum;
     }
 
-    public int getStudDaysWithOneClass(Student student){ //2 - Diogo
-        // TODO
-        return 0;
+    public int getStudDaysWithOneClass(Student student) {
+        int counter = 0;
+        int classesDay1 = 0, classesDay2 = 0, classesDay3 = 0, classesDay4 = 0, classesDay5 = 0;
+        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
+
+        // Iterate through each student event and only analyse if student is present
+        for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
+            if (studentEvents.get(eventIterator) == true) {
+                final int timeSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
+
+                System.out.println(timeSlot);
+
+                if (timeSlot >= 0 && timeSlot <= Problem.hoursPerDay)
+                    classesDay1++;
+                else if (timeSlot > Problem.hoursPerDay && timeSlot <= Problem.hoursPerDay * 2)
+                    classesDay2++;
+                else if (timeSlot > Problem.hoursPerDay * 2 && timeSlot <= Problem.hoursPerDay * 3)
+                    classesDay3++;
+                else if (timeSlot > Problem.hoursPerDay * 3 && timeSlot <= Problem.hoursPerDay * 4)
+                    classesDay4++;
+                else if (timeSlot > Problem.hoursPerDay * 4 && timeSlot <= Problem.hoursPerDay * 5)
+                    classesDay5++;
+                else
+                    continue;
+            }
+        }
+
+        if (classesDay1 == 1)
+            counter++;
+
+        if (classesDay2 == 1)
+            counter++;
+
+        if (classesDay3 == 1)
+            counter++;
+
+        if (classesDay4 == 1)
+            counter++;
+
+        if (classesDay5 == 1)
+            counter++;
+
+        return counter;
     }
 
-    public int getStudDaysWith2MoreConsClasses(Student student){
+    public int getStudDaysWith2MoreConsClasses(Student student) {
         int counter = 0;
         int previousEventId = -1;
 
-        for(int slotIterator = 0; slotIterator < Problem.timeSlots; slotIterator++) {
+        for (int slotIterator = 0; slotIterator < Problem.timeSlots; slotIterator++) {
             final int currentEventId = getEventIDFromTimeslot(student, slotIterator);
-            //If this is the beginning of the day, reset previousEventId
-            if(slotIterator % Problem.hoursPerDay == 0)
+            // If this is the beginning of the day, reset previousEventId
+            if (slotIterator % Problem.hoursPerDay == 0)
                 previousEventId = -1;
 
             // Both are not -1, which means they are defined and events are sequential
-            if(currentEventId != -1 && previousEventId != -1)
+            if (currentEventId != -1 && previousEventId != -1)
                 counter++;
-            
+
             previousEventId = currentEventId;
         }
 
         return counter;
     }
 
-    public int getStudDaysWithLastClass(Student student){
+    public int getStudDaysWithLastClass(Student student) {
         int counter = 0;
         final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
         // Iterate through each student event and only analyse if student is present
-        for(int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++)
-            if(studentEvents.get(eventIterator) == true) {
+        for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++)
+            if (studentEvents.get(eventIterator) == true) {
                 final int timeSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
-                //Dont analyse if timeslot is not defined
-                if(timeSlot == -1)
+                // Dont analyse if timeslot is not defined
+                if (timeSlot == -1)
                     continue;
-                if((timeSlot +1) % Problem.hoursPerDay == 0) //Add 1 since timeslots start at 0
+                if ((timeSlot + 1) % Problem.hoursPerDay == 0) // Add 1 since timeslots start at 0
                     counter++;
             }
         return counter;
     }
 
-
-    public int getTotalDaysWithOneClass(){
+    public int getTotalDaysWithOneClass() {
         int counter = 0;
 
-        for(Student student : this.prob.getStudents())
+        for (Student student : this.prob.getStudents())
             counter += getStudDaysWithOneClass(student);
 
         return counter;
     }
 
-    public int getTotalDaysWith2MoreConsClasses(){
+    public int getTotalDaysWith2MoreConsClasses() {
         int counter = 0;
 
-        for(Student student : this.prob.getStudents())
+        for (Student student : this.prob.getStudents())
             counter += getStudDaysWith2MoreConsClasses(student);
 
         return counter;
     }
 
-    public int getTotalDaysWithLastClass(){
+    public int getTotalDaysWithLastClass() {
         int counter = 0;
 
-        for(Student student : this.prob.getStudents())
+        for (Student student : this.prob.getStudents())
             counter += getStudDaysWithLastClass(student);
 
-        return counter;        
+        return counter;
     }
 
     public void outputSolutionToFile(String fileName) {
@@ -258,19 +300,18 @@ public class Solution {
         PrintWriter printWriter;
         try {
             printWriter = new PrintWriter(file);
-        } catch(FileNotFoundException e) {return;}
-        for(Event e : this.prob.getEvents()) {
-            //Pad number with max of 4 spaces
-            printWriter.printf("%4d %4d\n",
-                e.getTimeSlot(),
-                ((e.getRoom() == null) ? -1 : e.getRoom().getID()));
+        } catch (FileNotFoundException e) {
+            return;
+        }
+        for (Event e : this.prob.getEvents()) {
+            // Pad number with max of 4 spaces
+            printWriter.printf("%4d %4d\n", e.getTimeSlot(), ((e.getRoom() == null) ? -1 : e.getRoom().getID()));
         }
         printWriter.close();
     }
 
-
-    public void showSolutionOrderedByEventId(){
-        for(Event e : eventList){
+    public void showSolutionOrderedByEventId() {
+        for (Event e : eventList) {
             System.out.println();
             System.out.println("Event " + e.getID());
             System.out.println("Time Slot: " + e.getTimeSlot());
@@ -278,14 +319,13 @@ public class Solution {
         }
     }
 
-
     private int getEventIDFromTimeslot(Student student, int timeslot) {
         final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
 
-        for(int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
+        for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
             final Boolean isRegistrated = studentEvents.get(eventIterator);
             final int eventSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
-            if(isRegistrated && eventSlot == timeslot)
+            if (isRegistrated && eventSlot == timeslot)
                 return this.prob.getEvents().get(eventIterator).getID();
         }
 
