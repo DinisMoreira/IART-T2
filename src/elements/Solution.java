@@ -1,5 +1,8 @@
 package elements;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -147,19 +150,57 @@ public class Solution {
         return sum;
     }
 
-    public int getStudDaysWithOneClass(Student stud){ //2 - Dinis
+    public int getStudDaysWithOneClass(Student student){ //2 - Dinis
         //TO DO
         return 0;
     }
 
-    public int getStudDaysWith2MoreConsClasses(Student stud){//3 - Miguel
-        //TO DO
-        return 0;
+    public int getStudDaysWith2MoreConsClasses(Student student){
+        int counter = 0;
+        int previousEventId = -1;
+
+        for(int slotIterator = 0; slotIterator < Problem.timeSlots; slotIterator++) {
+            final int currentEventId = getEventIDFromTimeslot(student, slotIterator);
+            //If this is the beginning of the day, reset previousEventId
+            if(slotIterator % Problem.hoursPerDay == 0)
+                previousEventId = -1;
+
+            // Both are not -1, which means they are defined and events are sequential
+            if(currentEventId != -1 && previousEventId != -1)
+                counter++;
+            
+            previousEventId = currentEventId;
+        }
+
+        return counter;
     }
 
-    public int getStudDaysWithLastClass(Student stud){//2 - Miguel
-        //TO DO
-        return 0;
+    private int getEventIDFromTimeslot(Student student, int timeslot) {
+        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
+
+        for(int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
+            final Boolean isRegistrated = studentEvents.get(eventIterator);
+            final int eventSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
+            if(isRegistrated && eventSlot == timeslot)
+                return this.prob.getEvents().get(eventIterator).getID();
+        }
+
+        return -1;
+    }
+
+    public int getStudDaysWithLastClass(Student student){
+        int counter = 0;
+        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
+        // Iterate through each student event and only analyse if student is present
+        for(int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++)
+            if(studentEvents.get(eventIterator) == true) {
+                final int timeSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
+                if(timeSlot == -1) //Dont analyse if timeslot is not defined
+                    continue;
+                if((timeSlot +1) % Problem.hoursPerDay == 0) //Add 1 since timeslots start at 0
+                    counter++;
+            }
+        return counter;
     }
 
 
@@ -178,8 +219,19 @@ public class Solution {
         return 0;
     }
 
-    public void createSolutionFile(){//2 - Diogo
-        //TO DO
+    public void outputSolutionToFile(String fileName) {
+        File file = new File(fileName);
+        PrintWriter printWriter;
+        try {
+            printWriter = new PrintWriter(file);
+        } catch(FileNotFoundException e) {return;}
+        for(Event e : this.prob.getEvents()) {
+            //Pad number with max of 4 spaces
+            printWriter.printf("%4d %4d\n",
+                e.getTimeSlot(),
+                ((e.getRoom() == null) ? -1 : e.getRoom().getID()));
+        }
+        printWriter.close();
     }
 
     public void showSolutionOrderedByEventId(){

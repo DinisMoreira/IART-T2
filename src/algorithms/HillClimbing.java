@@ -1,9 +1,5 @@
 package algorithms;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
 import elements.*;
 import java.util.ArrayList;
 
@@ -17,7 +13,7 @@ public class HillClimbing{
     }
 
 
-    public void getSolution(){
+    public void getSolution(String outputPath){
         Solution sol = new Solution(prob);
 
         ArrayList<Student> studList;
@@ -32,21 +28,7 @@ public class HillClimbing{
         //sol.showSolutionOrderedByEventId();
         
         sol.generateRandomSolution();
-    }
-
-    public void outputSolutionToFile(String fileName) {
-        File file = new File(fileName);
-        PrintWriter printWriter;
-        try {
-            printWriter = new PrintWriter(file);
-        } catch(FileNotFoundException e) {return;}
-        for(Event e : this.prob.getEvents()) {
-            //Pad number with max of 4 spaces
-            printWriter.printf("%4d %4d\n",
-                e.getTimeSlot(),
-                ((e.getRoom() == null) ? -1 : e.getRoom().getID()));
-        }
-        printWriter.close();
+        sol.outputSolutionToFile(outputPath);
     }
 
 }
