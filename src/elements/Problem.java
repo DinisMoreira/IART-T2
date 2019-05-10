@@ -9,9 +9,9 @@ import java.util.Scanner;
 
 public class Problem {
 
-    final private int numberOfDays = 5;
-    final private int hoursPerDay = 9;
-    final private int timeSlots = numberOfDays * hoursPerDay;
+    final public static int numberOfDays = 5;
+    final public static int hoursPerDay = 9;
+    final public static int timeSlots = numberOfDays * hoursPerDay;
 
     private List<Room> rooms;
     private List<Student> students;
