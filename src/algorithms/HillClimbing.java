@@ -32,14 +32,14 @@ public class HillClimbing{
 
         int total1classDay = sol.getTotalDaysWithOneClass();
 
-        System.out.println(total1classDay);
+        //System.out.println(total1classDay);
 
 
         int numSoftInfrac = sol.getNumberOfSoftInfractions();
 
-        for(Student s : prob.getStudents()){
+        /*for(Student s : prob.getStudents()){
             System.out.println("S"+ s.getID()+ " - " + sol.getStudDaysWithOneClass(s));
-        }
+        }*/
 
         //betterNeigh = getBetterNeighbours(sol);
 
