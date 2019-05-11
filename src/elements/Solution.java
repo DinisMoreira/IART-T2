@@ -251,23 +251,32 @@ public class Solution {
     }
 
     public int getStudDaysWith2MoreConsClasses(Student student) {
-        int counter = 0;
-        int previousEventId = -1;
+        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
+        int returnValue = 0;
+        int consecutiveEvents = 0;
+        for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
+            final int eventID = getEventIDFromTimeslot(student, eventIterator);
 
-        for (int slotIterator = 0; slotIterator < Problem.timeSlots; slotIterator++) {
-            final int currentEventId = getEventIDFromTimeslot(student, slotIterator);
-            // If this is the beginning of the day, reset previousEventId
-            if (slotIterator % Problem.hoursPerDay == 0)
-                previousEventId = -1;
-
-            // Both are not -1, which means they are defined and events are sequential
-            if (currentEventId != -1 && previousEventId != -1)
-                counter++;
-
-            previousEventId = currentEventId;
+            // If event doesn't exist, reset counter, after incrementing
+            // returnValue with number of consecutive events
+            if(eventID == -1) {
+                if(consecutiveEvents > 2)
+                    returnValue += (consecutiveEvents -2);
+                consecutiveEvents = 0;
+            }
+            // If last class of day increment counter but reset before next iteration
+            else if((eventIterator +1) % Problem.hoursPerDay == 0) {
+                consecutiveEvents++;
+                if(consecutiveEvents > 2)
+                    returnValue += (consecutiveEvents -2);
+                consecutiveEvents = 0;
+            }
+            else {
+                consecutiveEvents++;
+            }
         }
 
-        return counter;
+        return returnValue;
     }
 
     public int getStudDaysWithLastClass(Student student) {
