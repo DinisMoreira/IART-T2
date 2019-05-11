@@ -15,6 +15,8 @@ public class HillClimbing{
     public Solution getSolution(){
         Solution sol = new Solution(prob);
 
+        ArrayList<Solution> betterNeigh = new ArrayList<Solution>();
+
         ArrayList<Student> studList;
         ArrayList<Event> eventList;
 
@@ -28,11 +30,43 @@ public class HillClimbing{
         
         sol.generateRandomSolution();
 
-        int numHardInfrac = sol.getNumberOfHardInfractions();
+        int numSoftInfrac = sol.getNumberOfSoftInfractions();
 
-        System.out.println("Num Hard Infrac. = " + numHardInfrac);
+        //betterNeigh = getBetterNeighbours(sol);
+
+        //System.out.println("Num better neigh. = " + betterNeigh.size());
 
         return sol;
+    }
+
+    public ArrayList<Solution> getBetterNeighbours(Solution sol){
+        ArrayList<Solution> betterNeigh = new ArrayList<Solution>();
+        
+        int currSolScore = sol.getSolutionEval();
+        int n = 0;
+
+        System.out.println("Curr. Score = " + currSolScore);
+        
+        for(Event e : sol.getEventList()){
+            for(Room r : e.getAcceptableRooms()){
+                for(int i = 0; i < sol.getProb().getTimeSlots(); i++){
+                    Solution newNeigh = new Solution(sol);
+
+                    newNeigh.allocateEventNoConstraints(e.getID(), i, r);
+                    int newNeighScore = newNeigh.getSolutionEval();
+
+                    
+                    System.out.println("New Score = " + n + " / event id = " + e.getID());
+
+                    if(newNeighScore < currSolScore){
+                        betterNeigh.add(newNeigh);
+                    }
+                    n++;
+                }
+            }
+        }
+
+        return betterNeigh;
     }
 
 }

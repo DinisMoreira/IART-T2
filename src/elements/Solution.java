@@ -16,9 +16,32 @@ public class Solution {
         this.prob = prob;
     }
 
+    public Solution(Solution sol) {
+        this.prob = sol.prob;
+        this.eventList = new ArrayList<Event>();
+
+        for(Event e : sol.eventList){
+            Event eCopy = new Event(e.getID());
+
+            eCopy.setAttendeesNum(e.getAttendeesNum());
+            eCopy.setRoom(e.getRoom());
+            eCopy.setTimeSlot(e.getTimeSlot());
+            eCopy.setAcceptableRooms(e.getAcceptableRooms());
+            eCopy.setRequiredFeatures(e.getRequiredFeatures());
+
+            this.eventList.add(eCopy);
+        }
+    }
+
     public List<Event> getEventList() {
         return this.eventList;
     }
+
+
+    public Problem getProb() {
+        return this.prob;
+    }
+
 
     public boolean allocateEventHardConstraints(int eventId, int timeSlot, Room room) {
         ArrayList<Student> studList = new ArrayList<Student>();
@@ -67,8 +90,7 @@ public class Solution {
     public boolean allocateEventNoConstraints(int eventId, int timeSlot, Room room) {
         this.eventList.get(eventId).setRoom(room);
         this.eventList.get(eventId).setTimeSlot(timeSlot);
-        System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot
-                + " (No constraints checked)");
+        //System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot+ " (No constraints checked)");
         return true;
     }
 
@@ -115,6 +137,14 @@ public class Solution {
         }
     }
 
+    public int getSolutionEval(){
+        int val = 0;
+
+        val = getNumberOfHardInfractions() * 1000 + getNumberOfSoftInfractions();
+
+        return val;
+    }
+
     public int getNumberOfHardInfractions() {
         int sum = 0;
 
@@ -125,7 +155,7 @@ public class Solution {
         return sum;
     }
 
-    public int getNumberConflictingEvents() { // 2 - Dinis
+    public int getNumberConflictingEvents() {
         int sum = 0;
 
         for (Event e1 : eventList) {
@@ -141,7 +171,7 @@ public class Solution {
         return sum;
     }
 
-    public int getNumberOfEventsWithBadRoom() {// 1 - Dinis
+    public int getNumberOfEventsWithBadRoom() {
         int sum = 0;
 
         for (Event e : eventList) {
@@ -153,7 +183,7 @@ public class Solution {
         return sum;
     }
 
-    public int getNumberofConflictingStudSchedules() {// 2 - Dinis
+    public int getNumberofConflictingStudSchedules() {
         ArrayList<Student> studList = new ArrayList<Student>();
         ArrayList<Event> studEventList = new ArrayList<Event>();
 
@@ -181,8 +211,11 @@ public class Solution {
         int sum = 0;
 
         sum += getTotalDaysWithOneClass();
+        System.out.println("DaysOneClass - " + getTotalDaysWithOneClass());
         sum += getTotalDaysWith2MoreConsClasses();
+        System.out.println("Days2MoreConsClasses - " + getTotalDaysWith2MoreConsClasses());
         sum += getTotalDaysWithLastClass();
+        System.out.println("DaysWithLastClass - " + getTotalDaysWithLastClass());
 
         return sum;
     }
@@ -197,7 +230,7 @@ public class Solution {
             if (studentEvents.get(eventIterator) == true) {
                 final int timeSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
 
-                System.out.println(timeSlot);
+                //System.out.println(timeSlot);
 
                 if (timeSlot >= 0 && timeSlot <= Problem.hoursPerDay)
                     classesDay1++;
@@ -295,6 +328,8 @@ public class Solution {
         return counter;
     }
 
+    
+
     public void outputSolutionToFile(String fileName) {
         File file = new File(fileName);
         PrintWriter printWriter;
@@ -332,4 +367,5 @@ public class Solution {
         return -1;
     }
 
+    
 }

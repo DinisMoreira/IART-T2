@@ -59,6 +59,19 @@ public class Event {
         return this.requiredFeatures;
     }
 
+    public void setRequiredFeatures(List<Integer> rf) {
+        this.requiredFeatures = rf;
+    }
+
+
+    public List<Room> getAcceptableRooms() {
+        return this.acceptableRooms;
+    }
+
+    public void setAcceptableRooms(List<Room> acceptableRooms) {
+        this.acceptableRooms = acceptableRooms;
+    }
+
 
     public int getTimeSlot() {
         return this.timeSlot;
