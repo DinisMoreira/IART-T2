@@ -222,42 +222,32 @@ public class Solution {
     }
 
     public int getStudDaysWithOneClass(Student student) {
-        int counter = 0, classesInADay = 0;
-        int day = 1, oldDay = 1;
-        boolean firstDay = true;
-        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
+        int sum = 0;
 
-        List<Event> sortedList = this.prob.getEvents();
-        Collections.sort(sortedList);
+        ArrayList<Event> studEvents = prob.getEventsForStudent(student.getID());
 
-        // Iterate through each student event and only analyse if student is present
-        for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
-            if (studentEvents.get(eventIterator) == true) {
-                final int timeSlot = sortedList.get(eventIterator).getTimeSlot();
+        ArrayList<Integer> studEventsDays = new ArrayList<Integer>();
 
-                day = (int) Math.ceil(timeSlot / Problem.hoursPerDay) + 1;
+        for(Event e : studEvents){
+            studEventsDays.add(e.getTimeSlot()/prob.getHoursPerDay());
+        }
 
-                if (firstDay) {
-                    oldDay = day;
-                    firstDay = false;
-                }
+        ArrayList<Integer> counter = new ArrayList<Integer>();
+        for(int i = 0; i < prob.getNumberOfDays(); i++){
+            counter.add(0);
+        }
 
-                if (oldDay != day) {
-                    if (classesInADay == 1)
-                        counter++;
-                    classesInADay = 1;
-                } else
-                    classesInADay++;
+        for (int i = 0; i < studEventsDays.size(); i++) {
+            counter.set(studEventsDays.get(i),counter.get(studEventsDays.get(i)) + 1);
+        }
 
-                oldDay = day;
-
+        for(int i = 0; i < counter.size(); i++){
+            if(counter.get(i) == 1){
+                sum++;
             }
         }
 
-        if (classesInADay == 1)
-            counter++;
-
-        return counter;
+        return sum;
     }
 
     public int getStudDaysWith2MoreConsClasses(Student student) {
