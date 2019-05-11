@@ -1,18 +1,16 @@
 package elements;
 
-
 import java.util.List;
 import java.util.ArrayList;
 
-public class Event {
+public class Event implements Comparable<Event> {
     private int id;
     private List<Integer> requiredFeatures;
- 
+
     private List<Room> acceptableRooms;
     private int attendeesNum;
-    
 
-    //Solution Parameters
+    // Solution Parameters
     private int timeSlot;
     private Room room;
 
@@ -26,30 +24,28 @@ public class Event {
     }
 
     public Boolean hasFeature(int feature) {
-        for(Integer f : this.requiredFeatures)
-            if(f == feature)
+        for (Integer f : this.requiredFeatures)
+            if (f == feature)
                 return true;
         return false;
     }
 
     public void addFeature(int feature) {
-        if(hasFeature(feature) == false)
+        if (hasFeature(feature) == false)
             this.requiredFeatures.add(feature);
     }
 
-    
     public Boolean hasAcceptableRoom(Room room) {
-        for(Room r : this.acceptableRooms)
-            if(r == room)
+        for (Room r : this.acceptableRooms)
+            if (r == room)
                 return true;
         return false;
     }
 
     public void addAcceptableRoom(Room room) {
-        if(hasAcceptableRoom(room) == false)
+        if (hasAcceptableRoom(room) == false)
             this.acceptableRooms.add(room);
     }
-
 
     public int getID() {
         return this.id;
@@ -99,11 +95,20 @@ public class Event {
 
     @Override
     public boolean equals(Object e) {
-        if (this == e) return true;
-        if (e == null) return false;
-        if (this.getClass() != e.getClass()) return false;
+        if (this == e)
+            return true;
+        if (e == null)
+            return false;
+        if (this.getClass() != e.getClass())
+            return false;
 
         Event event = (Event) e;
         return this.id == event.getID();
     }
+
+    @Override
+    public int compareTo(Event e) {
+        return this.timeSlot - e.getTimeSlot();
+    }
+
 }
