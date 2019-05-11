@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -188,45 +189,39 @@ public class Solution {
     }
 
     public int getStudDaysWithOneClass(Student student) {
-        int counter = 0;
-        int classesDay1 = 0, classesDay2 = 0, classesDay3 = 0, classesDay4 = 0, classesDay5 = 0;
+        int counter = 0, classesInADay = 0;
+        int day = 1, oldDay = 1;
+        boolean firstDay = true;
         final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
+
+        List<Event> sortedList = this.prob.getEvents();
+        Collections.sort(sortedList);
 
         // Iterate through each student event and only analyse if student is present
         for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
             if (studentEvents.get(eventIterator) == true) {
-                final int timeSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
+                final int timeSlot = sortedList.get(eventIterator).getTimeSlot();
 
-                System.out.println(timeSlot);
+                day = (int) Math.ceil(timeSlot / Problem.hoursPerDay) + 1;
 
-                if (timeSlot >= 0 && timeSlot <= Problem.hoursPerDay)
-                    classesDay1++;
-                else if (timeSlot > Problem.hoursPerDay && timeSlot <= Problem.hoursPerDay * 2)
-                    classesDay2++;
-                else if (timeSlot > Problem.hoursPerDay * 2 && timeSlot <= Problem.hoursPerDay * 3)
-                    classesDay3++;
-                else if (timeSlot > Problem.hoursPerDay * 3 && timeSlot <= Problem.hoursPerDay * 4)
-                    classesDay4++;
-                else if (timeSlot > Problem.hoursPerDay * 4 && timeSlot <= Problem.hoursPerDay * 5)
-                    classesDay5++;
-                else
-                    continue;
+                if (firstDay) {
+                    oldDay = day;
+                    firstDay = false;
+                }
+
+                if (oldDay != day) {
+                    if (classesInADay == 1)
+                        counter++;
+                    classesInADay = 1;
+                } else
+                    classesInADay++;
+
+                oldDay = day;
+
             }
         }
 
-        if (classesDay1 == 1)
-            counter++;
-
-        if (classesDay2 == 1)
-            counter++;
-
-        if (classesDay3 == 1)
-            counter++;
-
-        if (classesDay4 == 1)
-            counter++;
-
-        if (classesDay5 == 1)
+        if (classesInADay == 1)
             counter++;
 
         return counter;
