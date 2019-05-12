@@ -254,25 +254,25 @@ public class Solution {
         final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
         int returnValue = 0;
         int consecutiveEvents = 0;
-        for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
-            final int eventID = getEventIDFromTimeslot(student, eventIterator);
+        for (int timeSlotIterator = 0; timeSlotIterator < prob.getTimeSlots(); timeSlotIterator++) {
+            // Check if student is registered in event of current Timeslot
+            Boolean isStudentInEvent = false;
+            for(int b = 0; b < studentEvents.size(); b++)
+                if(studentEvents.get(b) == true && this.eventList.get(b).getTimeSlot() == timeSlotIterator)
+                    isStudentInEvent = true;
 
-            // If event doesn't exist, reset counter, after incrementing
-            // returnValue with number of consecutive events
-            if(eventID == -1) {
-                if(consecutiveEvents > 2)
-                    returnValue += (consecutiveEvents -2);
-                consecutiveEvents = 0;
-            }
-            // If last class of day increment counter but reset before next iteration
-            else if((eventIterator +1) % Problem.hoursPerDay == 0) {
+            if(isStudentInEvent)
                 consecutiveEvents++;
-                if(consecutiveEvents > 2)
-                    returnValue += (consecutiveEvents -2);
-                consecutiveEvents = 0;
-            }
             else {
-                consecutiveEvents++;
+                if(consecutiveEvents > 2)
+                    returnValue += (consecutiveEvents -2);
+                consecutiveEvents = 0;
+            }
+            // If last class of day reset counter before next iteration
+            if((timeSlotIterator +1) % prob.getHoursPerDay() == 0) {
+                if(consecutiveEvents > 2)
+                    returnValue += (consecutiveEvents -2);
+                consecutiveEvents = 0;
             }
         }
 
@@ -350,18 +350,4 @@ public class Solution {
         }
     }
 
-    private int getEventIDFromTimeslot(Student student, int timeslot) {
-        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
-
-        for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++) {
-            final Boolean isRegistrated = studentEvents.get(eventIterator);
-            final int eventSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
-            if (isRegistrated && eventSlot == timeslot)
-                return this.prob.getEvents().get(eventIterator).getID();
-        }
-
-        return -1;
-    }
-
-    
 }
