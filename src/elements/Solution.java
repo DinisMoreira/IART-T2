@@ -11,14 +11,17 @@ import java.util.Random;
 public class Solution {
     private List<Event> eventList;
     private Problem prob;
+    private int score;
 
     public Solution(Problem prob) {
         this.eventList = prob.getEvents();
         this.prob = prob;
+        this.score = 2147483647;
     }
 
     public Solution(Solution sol) {
         this.prob = sol.prob;
+        this.score = 2147483647;
         this.eventList = new ArrayList<Event>();
 
         for(Event e : sol.eventList){
@@ -42,6 +45,16 @@ public class Solution {
     public Problem getProb() {
         return this.prob;
     }
+
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
 
 
     public boolean allocateEventHardConstraints(int eventId, int timeSlot, Room room) {
@@ -136,12 +149,16 @@ public class Solution {
             numTries = 0;
             success = false;
         }
+
+        calculateSolutionEval();
     }
 
-    public int getSolutionEval(){
+    public int calculateSolutionEval(){
         int val = 0;
 
         val = getNumberOfHardInfractions() * 1000 + getNumberOfSoftInfractions();
+
+        this.score = val;
 
         return val;
     }

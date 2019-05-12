@@ -2,20 +2,22 @@ package algorithms;
 
 import elements.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class HillClimbing{
 
     private Problem prob;
+    private int maxTriesPerGen = 100;
 
 
     public HillClimbing(Problem p){
         this.prob = p;
+        this.maxTriesPerGen = p.getEvents().size();
     }
 
     public Solution getSolution(){
         Solution sol = new Solution(prob);
-
-        ArrayList<Solution> betterNeigh = new ArrayList<Solution>();
+        Solution betterSol;
 
         ArrayList<Student> studList;
         ArrayList<Event> eventList;
@@ -26,56 +28,108 @@ public class HillClimbing{
         
         sol.generateRandomSolution();
 
+        while(sol.getScore() > 0){
+            betterSol = getBetterSolution(sol);
 
+            if(betterSol == null){
+                System.out.println("Finished with score = " + sol.getScore());
+                if(sol.getNumberOfHardInfractions() == 0){
+                    System.out.println("Valid Solution");
+                }
+                else{
+                    System.out.println("Invalid Solution");
+                }
+                break;
+            }
+            else{
+                sol = betterSol;
+                System.out.println("Best neighbour score = " + sol.getScore());
 
-        int numInfrac = sol.getTotalDaysWith2MoreConsClasses();
+            }
+        }
+       
 
-        Solution newNeigh = new Solution(sol);
-
-        newNeigh.allocateEventNoConstraints(4, 33, newNeigh.getEventList().get(0).getAcceptableRooms().get(0));
-        newNeigh.allocateEventNoConstraints(5, 34, newNeigh.getEventList().get(0).getAcceptableRooms().get(0));
-        newNeigh.allocateEventNoConstraints(6, 35, newNeigh.getEventList().get(0).getAcceptableRooms().get(0));
-
-        int newNumInfrac = newNeigh.getTotalDaysWith2MoreConsClasses();
-
-        System.out.println("Event " + newNeigh.getEventList().get(4).getID() + " / Room - " +  newNeigh.getEventList().get(4).getRoom().getID() + " / Timeslot - " +  newNeigh.getEventList().get(4).getTimeSlot());
-        System.out.println("Event " + newNeigh.getEventList().get(5).getID() + " / Room - " +  newNeigh.getEventList().get(5).getRoom().getID() + " / Timeslot - " +  newNeigh.getEventList().get(5).getTimeSlot());
-        System.out.println("Event " + newNeigh.getEventList().get(6).getID() + " / Room - " +  newNeigh.getEventList().get(6).getRoom().getID() + " / Timeslot - " +  newNeigh.getEventList().get(6).getTimeSlot());
-        System.out.println(numInfrac + " / " + newNumInfrac);
-
-        //betterNeigh = getBetterNeighbours(sol);
-        //System.out.println("Num better neigh. = " + betterNeigh.size());
+        
 
         return sol;
     }
 
+    public Solution getBetterSolution(Solution sol){
+        Solution bestNeigh = null;
+        ArrayList<Solution> betterNeighs = new ArrayList<Solution>();
+
+        betterNeighs = getBetterNeighbours(sol);
+        //System.out.println("Num better neigh. = " + betterNeighs.size());
+
+        bestNeigh = getBestNeighbour(betterNeighs);
+        return bestNeigh;
+    }
+
+    public Solution getBestNeighbour(ArrayList<Solution> betterNeighs){
+        Solution bestNeigh = null;
+        int bestNeighScore = 2147483647;
+
+        for(Solution s : betterNeighs){
+            //System.out.println(s.getScore());
+            if(s.getScore() < bestNeighScore){
+                bestNeighScore = s.getScore();
+                bestNeigh = s;
+            }
+        }
+
+        return bestNeigh;
+    }
+
     public ArrayList<Solution> getBetterNeighbours(Solution sol){
         ArrayList<Solution> betterNeigh = new ArrayList<Solution>();
+        Random rand = new Random();
         
-        int currSolScore = sol.getSolutionEval();
+        int currSolScore;
+        if(sol.getScore() != 2147483647)
+            currSolScore = sol.getScore();
+        else{
+            currSolScore = sol.calculateSolutionEval();
+        }
         int n = 0;
+        int i = 0;
+        int j = 0;
 
-        System.out.println("Curr. Score = " + currSolScore);
+        //System.out.println("Curr. Score = " + currSolScore);
         
-        for(Event e : sol.getEventList()){
+        for(j = 0; j < sol.getEventList().size(); j++){
+            Event e = sol.getEventList().get(j);
+
+
             for(Room r : e.getAcceptableRooms()){
-                for(int i = 0; i < sol.getProb().getTimeSlots(); i++){
+                for(i = 0; i < sol.getProb().getTimeSlots(); i++){
                     Solution newNeigh = new Solution(sol);
 
-                    //Check why score isn't changing
                     newNeigh.allocateEventNoConstraints(e.getID(), i, r);
 
-                    int newNeighScore = newNeigh.getSolutionEval();
-
-                    System.out.println("Event - " + newNeigh.getEventList().get(e.getID()).getID() + " / Timeslot - " + newNeigh.getEventList().get(e.getID()).getTimeSlot() + " / Room - " + newNeigh.getEventList().get(e.getID()).getRoom().getID());
-                    System.out.println("Moved event " + e.getID() + " to timeslot " + i + " in room " + r.getID() + " // New Score = " + newNeighScore);
+                    int newNeighScore = newNeigh.calculateSolutionEval();
 
                     if(newNeighScore < currSolScore){
                         betterNeigh.add(newNeigh);
                     }
+
+                    //System.out.println(n + " / " + e.getID());
+                    i += rand.nextInt(sol.getProb().getTimeSlots());
+                    if(n > maxTriesPerGen || i >= sol.getProb().getTimeSlots()){
+                        break;
+                    }
+
                     n++;
                 }
+                if(n > maxTriesPerGen || (i & 1) != 0){
+                    break;
+                }
             }
+            j += rand.nextInt(3);
+            if(n > maxTriesPerGen || j >= sol.getEventList().size()){
+                break;
+            }
+
+
         }
 
         return betterNeigh;
