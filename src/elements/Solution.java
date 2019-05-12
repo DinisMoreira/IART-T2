@@ -46,7 +46,7 @@ public class Solution {
 
     public boolean allocateEventHardConstraints(int eventId, int timeSlot, Room room) {
         ArrayList<Student> studList = new ArrayList<Student>();
-        ArrayList<Event> studEventList = new ArrayList<Event>();
+        ArrayList<Integer> studEventList = new ArrayList<Integer>();
 
         // Check if event in that time slot and room already exists
         for (Event e : eventList) {
@@ -69,9 +69,9 @@ public class Solution {
         studList = prob.getStudentsForEvent(eventId);
 
         for (Student s : studList) {
-            studEventList = prob.getEventsForStudent(s.getID());
-            for (Event e : studEventList) {
-                if (e.getTimeSlot() == timeSlot) {
+            studEventList = prob.getEventIdsForStudent(s.getID());
+            for (int e : studEventList) {
+                if (eventList.get(e).getTimeSlot() == timeSlot) {
                     // System.out.println("Can't allocate event: " + eventId + " / Student " +
                     // s.getID() + " already attends event " + e.getID() + " at the same time slot:
                     // " + e.getTimeSlot());
@@ -186,7 +186,7 @@ public class Solution {
 
     public int getNumberofConflictingStudSchedules() {
         ArrayList<Student> studList = new ArrayList<Student>();
-        ArrayList<Event> studEventList = new ArrayList<Event>();
+        ArrayList<Integer> studEventList = new ArrayList<Integer>();
 
         int sum = 0;
 
@@ -195,9 +195,9 @@ public class Solution {
             studList = prob.getStudentsForEvent(e1.getID());
 
             for (Student s : studList) {
-                studEventList = prob.getEventsForStudent(s.getID());
-                for (Event e2 : studEventList) {
-                    if (e1.getID() != e2.getID() && e1.getTimeSlot() == e2.getTimeSlot()) {
+                studEventList = prob.getEventIdsForStudent(s.getID());
+                for (int e2 : studEventList) {
+                    if (e1.getID() != e2 && e1.getTimeSlot() == this.eventList.get(e2).getTimeSlot()) {
                         sum++;
                     }
                 }
@@ -212,11 +212,11 @@ public class Solution {
         int sum = 0;
 
         sum += getTotalDaysWithOneClass();
-        System.out.println("DaysOneClass - " + getTotalDaysWithOneClass());
+        //System.out.println("DaysOneClass - " + getTotalDaysWithOneClass());
         sum += getTotalDaysWith2MoreConsClasses();
-        System.out.println("Days2MoreConsClasses - " + getTotalDaysWith2MoreConsClasses());
+        //System.out.println("Days2MoreConsClasses - " + getTotalDaysWith2MoreConsClasses());
         sum += getTotalDaysWithLastClass();
-        System.out.println("DaysWithLastClass - " + getTotalDaysWithLastClass());
+        //System.out.println("DaysWithLastClass - " + getTotalDaysWithLastClass());
 
         return sum;
     }
@@ -224,12 +224,12 @@ public class Solution {
     public int getStudDaysWithOneClass(Student student) {
         int sum = 0;
 
-        ArrayList<Event> studEvents = prob.getEventsForStudent(student.getID());
+        ArrayList<Integer> studEvents = prob.getEventIdsForStudent(student.getID());
 
         ArrayList<Integer> studEventsDays = new ArrayList<Integer>();
 
-        for(Event e : studEvents){
-            studEventsDays.add(e.getTimeSlot()/prob.getHoursPerDay());
+        for(int e : studEvents){
+            studEventsDays.add(this.eventList.get(e).getTimeSlot()/prob.getHoursPerDay());
         }
 
         ArrayList<Integer> counter = new ArrayList<Integer>();
@@ -281,17 +281,19 @@ public class Solution {
 
     public int getStudDaysWithLastClass(Student student) {
         int counter = 0;
-        final List<Boolean> studentEvents = this.prob.getStudentEvents().get(student.getID());
-        // Iterate through each student event and only analyse if student is present
-        for (int eventIterator = 0; eventIterator < studentEvents.size(); eventIterator++)
-            if (studentEvents.get(eventIterator) == true) {
-                final int timeSlot = this.prob.getEvents().get(eventIterator).getTimeSlot();
-                // Dont analyse if timeslot is not defined
-                if (timeSlot == -1)
-                    continue;
-                if ((timeSlot + 1) % Problem.hoursPerDay == 0) // Add 1 since timeslots start at 0
+
+        ArrayList<Integer> oldStudEvents = prob.getEventIdsForStudent(student.getID());
+
+        ArrayList<Event> studEvents = new ArrayList<Event>();
+        for(int e: oldStudEvents){
+            studEvents.add(this.eventList.get(e));
+        }
+
+        for(Event e : studEvents){
+            if ((e.getTimeSlot() + 1) % prob.hoursPerDay == 0) // Add 1 since timeslots start at 0
                     counter++;
-            }
+        }
+
         return counter;
     }
 

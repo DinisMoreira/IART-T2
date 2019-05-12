@@ -23,26 +23,27 @@ public class HillClimbing{
 
         /*TESTING STUFF*/
         System.out.println();
-
-        //System.out.println("Event 0 - Time Slot: " + sol.getEventList().get(0).getTimeSlot() + " / Room: " + sol.getEventList().get(0).getRoom().getID());
-        //System.out.println("Event 1 - Time Slot: " + sol.getEventList().get(1).getTimeSlot() + " / Room: " + sol.getEventList().get(1).getRoom().getID());
-        //sol.showSolutionOrderedByEventId();
         
         sol.generateRandomSolution();
 
-        int total1classDay = sol.getTotalDaysWithOneClass();
-
-        //System.out.println(total1classDay);
 
 
-        int numSoftInfrac = sol.getNumberOfSoftInfractions();
+        int numInfrac = sol.getTotalDaysWith2MoreConsClasses();
 
-        /*for(Student s : prob.getStudents()){
-            System.out.println("S"+ s.getID()+ " - " + sol.getStudDaysWithOneClass(s));
-        }*/
+        Solution newNeigh = new Solution(sol);
+
+        newNeigh.allocateEventNoConstraints(4, 33, newNeigh.getEventList().get(0).getAcceptableRooms().get(0));
+        newNeigh.allocateEventNoConstraints(5, 34, newNeigh.getEventList().get(0).getAcceptableRooms().get(0));
+        newNeigh.allocateEventNoConstraints(6, 35, newNeigh.getEventList().get(0).getAcceptableRooms().get(0));
+
+        int newNumInfrac = newNeigh.getTotalDaysWith2MoreConsClasses();
+
+        System.out.println("Event " + newNeigh.getEventList().get(4).getID() + " / Room - " +  newNeigh.getEventList().get(4).getRoom().getID() + " / Timeslot - " +  newNeigh.getEventList().get(4).getTimeSlot());
+        System.out.println("Event " + newNeigh.getEventList().get(5).getID() + " / Room - " +  newNeigh.getEventList().get(5).getRoom().getID() + " / Timeslot - " +  newNeigh.getEventList().get(5).getTimeSlot());
+        System.out.println("Event " + newNeigh.getEventList().get(6).getID() + " / Room - " +  newNeigh.getEventList().get(6).getRoom().getID() + " / Timeslot - " +  newNeigh.getEventList().get(6).getTimeSlot());
+        System.out.println(numInfrac + " / " + newNumInfrac);
 
         //betterNeigh = getBetterNeighbours(sol);
-
         //System.out.println("Num better neigh. = " + betterNeigh.size());
 
         return sol;
@@ -61,11 +62,13 @@ public class HillClimbing{
                 for(int i = 0; i < sol.getProb().getTimeSlots(); i++){
                     Solution newNeigh = new Solution(sol);
 
+                    //Check why score isn't changing
                     newNeigh.allocateEventNoConstraints(e.getID(), i, r);
+
                     int newNeighScore = newNeigh.getSolutionEval();
 
-                    
-                    System.out.println("New Score = " + n + " / event id = " + e.getID());
+                    System.out.println("Event - " + newNeigh.getEventList().get(e.getID()).getID() + " / Timeslot - " + newNeigh.getEventList().get(e.getID()).getTimeSlot() + " / Room - " + newNeigh.getEventList().get(e.getID()).getRoom().getID());
+                    System.out.println("Moved event " + e.getID() + " to timeslot " + i + " in room " + r.getID() + " // New Score = " + newNeighScore);
 
                     if(newNeighScore < currSolScore){
                         betterNeigh.add(newNeigh);

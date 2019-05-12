@@ -209,13 +209,13 @@ public class Problem {
         return studList;
     }
 
-    public ArrayList<Event> getEventsForStudent(int studId){
-        ArrayList<Event> eventList = new ArrayList<Event>();
+    public ArrayList<Integer> getEventIdsForStudent(int studId){
+        ArrayList<Integer> eventList = new ArrayList<Integer>();
 
         for(int e = 0; e < events.size(); e++){
             if(studentEvents.get(studId).get(e)){
                 Event event = events.get(e);
-                eventList.add(event);
+                eventList.add(event.getID());
             }
         }
 
@@ -225,7 +225,7 @@ public class Problem {
 
 
     public void showProblem(){
-        ArrayList<Event> eventList = new ArrayList<Event>();
+        ArrayList<Integer> eventList = new ArrayList<Integer>();
         List<Integer> features = new ArrayList<Integer>();
 
 
@@ -235,13 +235,13 @@ public class Problem {
         
 
         for(int s = 0; s < students.size(); s++){
-            eventList = getEventsForStudent(s);
+            eventList = getEventIdsForStudent(s);
 
             if(eventList.size() > 0){
                 System.out.print("Student " + s + " goes to events: ");
 
-                for(Event e : eventList){
-                    System.out.print(e.getID() + " ");
+                for(int e : eventList){
+                    System.out.print(e + " ");
                 }
             }
             
