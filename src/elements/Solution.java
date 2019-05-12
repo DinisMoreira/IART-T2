@@ -96,7 +96,8 @@ public class Solution {
         // Set event Time Slot and Room
         this.eventList.get(eventId).setRoom(room);
         this.eventList.get(eventId).setTimeSlot(timeSlot);
-        System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot);
+        allocateEventNoConstraints(eventId, timeSlot, room);
+        //System.out.println("Allocated event " + eventId + " to Room " + room.getID() + " TimeSlot " + timeSlot);
         return true;
 
     }
