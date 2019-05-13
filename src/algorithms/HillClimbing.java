@@ -18,14 +18,10 @@ public class HillClimbing{
     public Solution getSolution(){
         Solution sol = new Solution(prob);
         Solution betterSol;
-
         ArrayList<Student> studList;
         ArrayList<Event> eventList;
 
-
-        /*TESTING STUFF*/
         System.out.println();
-        
         sol.generateRandomSolution();
 
         while(sol.getScore() > 0){

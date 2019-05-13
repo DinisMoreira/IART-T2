@@ -1,6 +1,6 @@
 import java.io.*;
 
-import algorithms.HillClimbing;
+import algorithms.*;
 import elements.*;
 
 public class Main {
@@ -22,8 +22,12 @@ public class Main {
 
         prob.showProblem();
 
-        HillClimbing hc = new HillClimbing(prob);
+        /*HillClimbing hc = new HillClimbing(prob);
         Solution solution = hc.getSolution();
+        solution.outputSolutionToFile("../solutions/" + fileName + ".sln");*/
+
+        Genetic gen = new Genetic(prob, 3);
+        Solution solution = gen.getSolution();
         solution.outputSolutionToFile("../solutions/" + fileName + ".sln");
     }
 
