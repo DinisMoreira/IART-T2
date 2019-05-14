@@ -14,9 +14,21 @@ public class Solution {
     private int score;
 
     public Solution(Problem prob) {
-        this.eventList = prob.getEvents();
         this.prob = prob;
         this.score = 2147483647;
+        this.eventList = new ArrayList<Event>();
+
+        for(Event e : prob.getEvents()){
+            Event eCopy = new Event(e.getID());
+
+            eCopy.setAttendeesNum(e.getAttendeesNum());
+            eCopy.setRoom(e.getRoom());
+            eCopy.setTimeSlot(e.getTimeSlot());
+            eCopy.setAcceptableRooms(e.getAcceptableRooms());
+            eCopy.setRequiredFeatures(e.getRequiredFeatures());
+
+            this.eventList.add(eCopy);
+        }
     }
 
     public Solution(Solution sol) {
