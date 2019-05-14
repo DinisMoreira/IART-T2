@@ -121,7 +121,7 @@ public class Solution {
         Random rand = new Random();
 
         int timeSlot = rand.nextInt(prob.getTimeSlots());
-        int roomId = rand.nextInt(prob.getRooms().size());
+        int roomIndex = rand.nextInt(prob.getRooms().size());
 
         int numTries = 0;
         boolean success = false;
@@ -129,13 +129,13 @@ public class Solution {
         for (Event e : eventList) {
             while (numTries < prob.getTimeSlots() * prob.getRooms().size()) {
 
-                success = allocateEventHardConstraints(e.getID(), timeSlot, prob.getRooms().get(roomId));
+                success = allocateEventHardConstraints(e.getID(), timeSlot, prob.getRooms().get(roomIndex));
 
                 if (success)
                     break;
 
                 timeSlot = rand.nextInt(prob.getTimeSlots());
-                roomId = rand.nextInt(prob.getRooms().size());
+                roomIndex = rand.nextInt(prob.getRooms().size());
 
                 numTries++;
             }
@@ -145,7 +145,7 @@ public class Solution {
             }
 
             timeSlot = rand.nextInt(prob.getTimeSlots());
-            roomId = rand.nextInt(prob.getRooms().size());
+            roomIndex = rand.nextInt(prob.getRooms().size());
 
             numTries = 0;
             success = false;
