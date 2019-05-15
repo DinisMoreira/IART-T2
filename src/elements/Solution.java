@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Solution {
+public class Solution implements Comparable<Solution>{
     private List<Event> eventList;
     private Problem prob;
     private int score;
@@ -379,5 +379,15 @@ public class Solution {
             System.out.println("Room: " + e.getRoom().getID());
         }
     }
+
+    @Override
+      public int compareTo(Solution sol) {
+         if (this.score == sol.getScore()) {
+             return 0;
+         } else if (this.score < sol.getScore()) {
+             return -1;
+         }
+         return 1;
+      }
 
 }

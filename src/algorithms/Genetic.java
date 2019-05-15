@@ -1,8 +1,9 @@
 package algorithms;
 
 import elements.*;
-import java.util.ArrayList;
+import java.util.TreeSet;
 import java.util.Random;
+import java.util.TreeSet;
 
 public class Genetic{
 
@@ -18,27 +19,59 @@ public class Genetic{
     }
 
     public Solution getSolution(){
-        Solution finalSol = new Solution(prob);
-        ArrayList<Solution> initialPop = generateInitialPopulation();
+        Random rand = new Random();
+        Solution bestSol = null;
+        TreeSet<Solution> population = generateInitialPopulation();
 
-        //Solution solToMut = initialPop.get(initialPop.size()-1);
-        Solution child = reproduce(initialPop.get(initialPop.size()-1), initialPop.get(initialPop.size()-2));
+        Solution p1, p2, child;
 
-        for(Solution s : initialPop){
-            System.out.println("----------------------------------");
-            s.showSolutionOrderedByEventId();
+        bestSol = population.first();
+
+        while(bestSol.getScore() > 0){
+            TreeSet<Solution> newPopulation = new TreeSet<Solution>();
+
+            bestSol = population.first();
+
+            System.out.println(bestSol.getScore());
+
+            for(int i = 0; i < populationSize; i++){
+                p1 = getRandomPopulationElement(population);
+                p2 = getRandomPopulationElement(population);
+
+                child = reproduce(p1, p2);
+
+                int isMutated = rand.nextInt(101);
+
+                if(mutationProbability > isMutated){
+                    mutateSolutionOneEvent(child);
+                }
+
+                child.calculateSolutionEval();
+
+                newPopulation.add(child);
+            }
+
+            population = newPopulation;
         }
 
-        
-        System.out.println("************************************");
-
-        //mutateSolutionOneEvent(solToMut);
-        //solToMut.showSolutionOrderedByEventId();
-        //child.showSolutionOrderedByEventId();
 
 
 
-        return finalSol;
+        return bestSol;
+    }
+
+    public Solution getRandomPopulationElement(TreeSet<Solution> population){
+        Random rand = new Random();
+        int index = rand.nextInt(population.size());
+        int i = 0;
+
+        for(Solution s : population){
+            if(i == index)
+                return s;
+            i++;
+        }
+
+        return null;
     }
 
 
@@ -55,6 +88,8 @@ public class Genetic{
 
         original.allocateEventNoConstraints(eventId, timeSlot, room);
 
+        original.calculateSolutionEval();
+
         return;
     }
 
@@ -63,33 +98,31 @@ public class Genetic{
         Solution child = new Solution(p1);
         int randomNum;
 
+
         for(Event e : child.getEventList()){
             randomNum = rand.nextInt(2);
             if(randomNum == 1){
-                System.out.println("P2 event " + e.getID());
-                e = p2.getEventList().get(e.getID());
+                child.allocateEventNoConstraints(e.getID(), p2.getEventList().get(e.getID()).getTimeSlot(), p2.getEventList().get(e.getID()).getRoom());
             }
         }
+
+        child.calculateSolutionEval();
 
 
         return child;
     }
 
 
-    public ArrayList<Solution> generateInitialPopulation(){
-        ArrayList<Solution> initialPop = new ArrayList<Solution>();
+    public TreeSet<Solution> generateInitialPopulation(){
+        TreeSet<Solution> initialPop = new TreeSet<Solution>();
 
         Solution sol = null;
 
         for(int i = 0; i < populationSize; i++){
             sol = new Solution(prob);
+            sol.generateRandomSolution();
             initialPop.add(sol);
         }
-
-        for(Solution s : initialPop){
-            s.generateRandomSolution();
-        }
-
         return initialPop;
     }
 
