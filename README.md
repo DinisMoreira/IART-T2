@@ -20,7 +20,7 @@ e.g.:
 
     $ make run file=ourFile
 
-Input Files are looked in directory ProblemFiles
+Input Files are searched inside directory ProblemFiles
 
 
 ## Cleaning:
