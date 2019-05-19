@@ -22,12 +22,11 @@ public class Main {
 
         prob.showProblem();
 
-        /*HillClimbing hc = new HillClimbing(prob);
-        Solution solution = hc.getSolution();
-        solution.outputSolutionToFile("../solutions/" + fileName + ".sln");*/
+//        HillClimbing algo = new HillClimbing(prob);
+        SimulatedAnnealing algo = new SimulatedAnnealing(prob);
+//        Genetic algo = new Genetic(prob, 25, 3);
 
-        Genetic gen = new Genetic(prob, 25, 3);
-        Solution solution = gen.getSolution();
+        Solution solution = algo.getSolution();
         solution.outputSolutionToFile("../solutions/" + fileName + ".sln");
     }
 
