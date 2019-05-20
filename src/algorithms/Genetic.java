@@ -5,7 +5,7 @@ import java.util.TreeSet;
 import java.util.Random;
 import java.util.TreeSet;
 
-public class Genetic{
+public class Genetic extends Algorithm {
 
     private Problem prob;
     private int populationSize;

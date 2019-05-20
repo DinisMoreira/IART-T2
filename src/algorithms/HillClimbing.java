@@ -4,7 +4,7 @@ import elements.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class HillClimbing{
+public class HillClimbing extends Algorithm {
 
     private Problem prob;
     private int maxTriesPerGen = 100;

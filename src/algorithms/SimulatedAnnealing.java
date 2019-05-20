@@ -4,7 +4,7 @@ import elements.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SimulatedAnnealing {
+public class SimulatedAnnealing extends Algorithm {
 
     private Problem prob;
     private int maxTriesPerGen = 100;
