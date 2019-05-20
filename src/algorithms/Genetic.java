@@ -18,12 +18,13 @@ public class Genetic extends Algorithm {
         this.mutationProbability = mutationProbability;
     }
 
-    public Solution getSolution(){
+    public Solution getSolutionNormal(){
         Random rand = new Random();
         Solution bestSol = null;
         TreeSet<Solution> population = generateInitialPopulation();
 
         Solution p1, p2, child;
+        int oldBestSolScore = 2147483647;
 
         bestSol = population.first();
 
@@ -32,9 +33,14 @@ public class Genetic extends Algorithm {
 
             bestSol = population.first();
 
-            System.out.println(bestSol.getScore());
+            if(bestSol.getScore() != oldBestSolScore){
+                System.out.println(bestSol.getScore());
+                oldBestSolScore = bestSol.getScore();
+            }
 
-            for(int i = 0; i < populationSize; i++){
+            while(newPopulation.size() < populationSize){ // Até a população atingir um número de elementos?
+                
+                //System.out.println("Pop. Size = "+newPopulation.size() + " / " + populationSize);
                 p1 = getRandomPopulationElement(population);
                 p2 = getRandomPopulationElement(population);
 
@@ -54,20 +60,76 @@ public class Genetic extends Algorithm {
             population = newPopulation;
         }
 
+        return bestSol;
+    }
 
+    public Solution getSolutionOptimized(){
+        Random rand = new Random();
+        Solution bestSol = null;
+        TreeSet<Solution> population = generateInitialPopulation();
+        int elegibleParents = 10;
 
+        Solution p1, p2, child;
+        int oldBestSolScore = 2147483647;
+
+        bestSol = population.first();
+
+        while(bestSol.getScore() > 0){
+            TreeSet<Solution> newPopulation = new TreeSet<Solution>();
+
+            bestSol = population.first();
+
+            if(bestSol.getScore() != oldBestSolScore){
+                System.out.println(bestSol.getScore());
+                oldBestSolScore = bestSol.getScore();
+            }
+
+            while(newPopulation.size() < populationSize){ // Até a população atingir um número de elementos?
+                
+                //System.out.println("Pop. Size = "+newPopulation.size() + " / " + populationSize);
+                p1 = getPopulationElementIndex(population, rand.nextInt(elegibleParents));
+                p2 = getPopulationElementIndex(population, rand.nextInt(elegibleParents));
+
+                child = reproduce(p1, p2);
+
+                int isMutated = rand.nextInt(101);
+
+                if(mutationProbability > isMutated){
+                    mutateSolutionOneEvent(child);
+                }
+
+                child.calculateSolutionEval();
+
+                newPopulation.add(child);
+            }
+
+            population = newPopulation;
+        }
 
         return bestSol;
     }
 
+
+    
+
+
     public Solution getRandomPopulationElement(TreeSet<Solution> population){
         Random rand = new Random();
         int index = rand.nextInt(population.size());
+        
+        return getPopulationElementIndex(population, index);
+    }
+
+    public Solution getPopulationElementIndex(TreeSet<Solution> population, int index){
         int i = 0;
 
+        
+
         for(Solution s : population){
-            if(i == index)
+            if(i == index){
+                //System.out.println("Getting sol. " + i + " of " + population.size());
                 return s;
+            }
             i++;
         }
 
@@ -84,7 +146,7 @@ public class Genetic extends Algorithm {
         int roomIndex = rand.nextInt(original.getEventList().get(eventId).getAcceptableRooms().size());
         Room room = original.getEventList().get(eventId).getAcceptableRooms().get(roomIndex);
 
-        System.out.println("Mutated event " + eventId);
+        //System.out.println("Mutated event " + eventId);
 
         original.allocateEventNoConstraints(eventId, timeSlot, room);
 
@@ -118,10 +180,16 @@ public class Genetic extends Algorithm {
 
         Solution sol = null;
 
-        for(int i = 0; i < populationSize; i++){
+        sol = new Solution(prob);
+        sol.generateRandomSolution();
+        initialPop.add(sol);
+
+        while(initialPop.size() < populationSize){
             sol = new Solution(prob);
             sol.generateRandomSolution();
-            initialPop.add(sol);
+            //if(sol.getScore() <= initialPop.first().getScore()*4){
+                initialPop.add(sol);
+            //}
         }
         return initialPop;
     }
