@@ -26,8 +26,8 @@ public class Main {
         Solution solution = hc.getSolution();
         solution.outputSolutionToFile("../solutions/" + fileName + ".sln");*/
 
-        Genetic gen = new Genetic(prob, 25, 3);
-        Solution solution = gen.getSolution();
+        Genetic gen = new Genetic(prob, 25, 5);
+        Solution solution = gen.getSolutionOptimized();
         solution.outputSolutionToFile("../solutions/" + fileName + ".sln");
     }
 
