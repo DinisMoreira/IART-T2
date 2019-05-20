@@ -148,4 +148,12 @@ public class SimulatedAnnealing extends Algorithm {
         return betterNeighs;
     }
 
+
+    public Solution getSolutionNormal(){
+        return null;
+    }
+
+    public Solution getSolutionOptimized(){
+        return null;
+    }
 }

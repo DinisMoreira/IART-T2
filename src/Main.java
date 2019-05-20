@@ -40,15 +40,29 @@ public class Main {
                     algo = new SimulatedAnnealing(prob);
                 break;
                 case(3):
-                    algo = new Genetic(prob, 25, 3);
+                    algo = new Genetic(prob, 30, 8);
                 break;
+                /*case(4):
+                    algo = new Genetic(prob, 30, 8);
+                break;*/
                 default:
                     System.err.println("Unexpeted code path");
                     stopRunning = true;
                     continue;
             }
+
+            Solution solution;
             
-            Solution solution = algo.getSolution();
+            /*if(algorithmSelection == 3){
+                solution = algo.getSolutionNormal();
+            }
+            else*/ if(algorithmSelection == 3){
+                solution = algo.getSolutionOptimized();
+            }
+            else{
+                solution = algo.getSolution();
+            }
+            
             solution.outputSolutionToFile("../solutions/" + fileName + ".sln");
         }
         
@@ -88,6 +102,7 @@ public class Main {
             System.out.println("1- Hill Climbing Algorithm");
             System.out.println("2- Simulated Annealing Algorithm");
             System.out.println("3- Genetic Algorithm");
+            //System.out.println("4- Genetic Algorithm");
             System.out.print("Which algorithm would you like? (1-" + maxNumberAlgorithms + "): ");
             algorithm = scanner.nextInt();
         }

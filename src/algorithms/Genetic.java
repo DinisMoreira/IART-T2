@@ -60,6 +60,8 @@ public class Genetic extends Algorithm {
             population = newPopulation;
         }
 
+        System.out.println("Found Solution");
+
         return bestSol;
     }
 
@@ -67,7 +69,7 @@ public class Genetic extends Algorithm {
         Random rand = new Random();
         Solution bestSol = null;
         TreeSet<Solution> population = generateInitialPopulation();
-        int elegibleParents = 10;
+        int elegibleParents = populationSize/2;
 
         Solution p1, p2, child;
         int oldBestSolScore = 2147483647;
@@ -84,8 +86,7 @@ public class Genetic extends Algorithm {
                 oldBestSolScore = bestSol.getScore();
             }
 
-            while(newPopulation.size() < populationSize){ // Até a população atingir um número de elementos?
-                
+            while(newPopulation.size() < populationSize){
                 //System.out.println("Pop. Size = "+newPopulation.size() + " / " + populationSize);
                 p1 = getPopulationElementIndex(population, rand.nextInt(elegibleParents));
                 p2 = getPopulationElementIndex(population, rand.nextInt(elegibleParents));
@@ -187,11 +188,14 @@ public class Genetic extends Algorithm {
         while(initialPop.size() < populationSize){
             sol = new Solution(prob);
             sol.generateRandomSolution();
-            //if(sol.getScore() <= initialPop.first().getScore()*4){
-                initialPop.add(sol);
-            //}
+            initialPop.add(sol);
+            
         }
         return initialPop;
+    }
+
+    public Solution getSolution(){
+        return null;
     }
 
 }
