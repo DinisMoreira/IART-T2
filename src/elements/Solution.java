@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -320,7 +319,7 @@ public class Solution implements Comparable<Solution>{
         }
 
         for(Event e : studEvents){
-            if ((e.getTimeSlot() + 1) % prob.hoursPerDay == 0) // Add 1 since timeslots start at 0
+            if ((e.getTimeSlot() + 1) % prob.getHoursPerDay() == 0) // Add 1 since timeslots start at 0
                     counter++;
         }
 
