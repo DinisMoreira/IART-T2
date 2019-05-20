@@ -364,7 +364,7 @@ public class Solution implements Comparable<Solution>{
         } catch (FileNotFoundException e) {
             return;
         }
-        for (Event e : this.prob.getEvents()) {
+        for (Event e : this.eventList) {
             // Pad number with max of 4 spaces
             printWriter.printf("%4d %4d\n", e.getTimeSlot(), ((e.getRoom() == null) ? -1 : e.getRoom().getID()));
         }
