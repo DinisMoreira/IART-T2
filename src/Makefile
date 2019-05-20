@@ -3,19 +3,26 @@ out := Main
 BUILD_DIR := ./../build
 SOL_DIR := ./../solutions
 
-.PHONY: all run clean
+.SILENT: buildSolutionDir makeBuildDir
+.PHONY: default run clean buildSolutionDir makeBuildDir
 
-all:
-	-mkdir $(BUILD_DIR)
+default: compile
+
+# Compilation targets
+compile: makeBuildDir
 	javac -d $(BUILD_DIR)/ $(src)
 
-run:
-ifeq ($(file), )
-	$(error "missing var file definition")
-endif
-	-mkdir $(SOL_DIR)
-	java -cp $(BUILD_DIR) $(out) $(file)
+makeBuildDir:
+	-mkdir $(BUILD_DIR)
 
+# Execution targets
+run: buildSolutionDir
+	java -cp $(BUILD_DIR) $(out)
+
+buildSolutionDir:
+	-mkdir $(SOL_DIR)
+
+# Cleanup targets
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf $(SOL_DIR)
