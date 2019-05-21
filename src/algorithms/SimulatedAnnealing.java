@@ -23,7 +23,7 @@ public class SimulatedAnnealing extends Algorithm {
         System.out.println();
         sol.generateRandomSolution();
 
-        double temperature = ~0;
+        double temperature = Double.MAX_VALUE;
         while (sol.getScore() > 0) {
             randomSol = getRandomSolution(sol);
 
@@ -37,12 +37,12 @@ public class SimulatedAnnealing extends Algorithm {
                 break;
             } else {
                 final double deltaE = randomSol.getScore() - sol.getScore();
-                if(deltaE > 0)
+                if (deltaE > 0)
                     sol = randomSol;
                 else {
-                    final double probability = Math.exp(deltaE/temperature);
+                    final double probability = Math.exp(deltaE / temperature);
                     final double randomDouble = this.random.nextDouble();
-                    if(randomDouble < probability)
+                    if (randomDouble < probability)
                         sol = randomSol;
                 }
 
@@ -148,12 +148,11 @@ public class SimulatedAnnealing extends Algorithm {
         return betterNeighs;
     }
 
-
-    public Solution getSolutionNormal(){
+    public Solution getSolutionNormal() {
         return null;
     }
 
-    public Solution getSolutionOptimized(){
+    public Solution getSolutionOptimized() {
         return null;
     }
 }
