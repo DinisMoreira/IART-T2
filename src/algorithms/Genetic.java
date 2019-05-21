@@ -18,76 +18,46 @@ public class Genetic extends Algorithm {
         this.mutationProbability = mutationProbability;
     }
 
-    public Solution getSolutionNormal(){
+    public Solution getSolutionDynamicMutProb(){
         Random rand = new Random();
         Solution bestSol = null;
         TreeSet<Solution> population = generateInitialPopulation();
 
-        Solution p1, p2, child;
+        Solution p1, p2, child, bestSolEver;
         int oldBestSolScore = 2147483647;
 
-        bestSol = population.first();
-
-        while(bestSol.getScore() > 0){
-            TreeSet<Solution> newPopulation = new TreeSet<Solution>();
-
-            bestSol = population.first();
-
-            if(bestSol.getScore() != oldBestSolScore){
-                System.out.println(bestSol.getScore());
-                oldBestSolScore = bestSol.getScore();
-            }
-
-            while(newPopulation.size() < populationSize){ // Até a população atingir um número de elementos?
-                
-                //System.out.println("Pop. Size = "+newPopulation.size() + " / " + populationSize);
-                p1 = getRandomPopulationElement(population);
-                p2 = getRandomPopulationElement(population);
-
-                child = reproduce(p1, p2);
-
-                int isMutated = rand.nextInt(101);
-
-                if(mutationProbability > isMutated){
-                    mutateSolutionOneEvent(child);
-                }
-
-                child.calculateSolutionEval();
-
-                newPopulation.add(child);
-            }
-
-            population = newPopulation;
-        }
-
-        System.out.println("Found Solution");
-
-        return bestSol;
-    }
-
-    public Solution getSolutionOptimized(){
-        Random rand = new Random();
-        Solution bestSol = null;
-        TreeSet<Solution> population = generateInitialPopulation();
         int elegibleParents = populationSize/2;
+        int limitNumberOfTries = 100;
+        int numberOfTries = 0;
 
-        Solution p1, p2, child;
-        int oldBestSolScore = 2147483647;
+        int bestScoreEver = 2147483647;
+
 
         bestSol = population.first();
+        bestSolEver = bestSol;
 
-        while(bestSol.getScore() > 0){
+        while(bestSol.getScore() > 0 && numberOfTries < limitNumberOfTries){
             TreeSet<Solution> newPopulation = new TreeSet<Solution>();
 
             bestSol = population.first();
+
+            if(bestSolEver.getScore() > bestSol.getScore()){
+                bestSolEver = bestSol;
+            }
 
             if(bestSol.getScore() != oldBestSolScore){
                 System.out.println("Distance to perfect solution = " + bestSol.getScore());
                 oldBestSolScore = bestSol.getScore();
+
+                if(bestScoreEver > bestSol.getScore()){
+                    bestScoreEver = bestSol.getScore();
+                    numberOfTries = 0;
+                    mutationProbability = 0;
+                }
+                   
             }
 
             while(newPopulation.size() < populationSize){
-                //System.out.println("Pop. Size = "+newPopulation.size() + " / " + populationSize);
                 p1 = getPopulationElementIndex(population, rand.nextInt(elegibleParents));
                 p2 = getPopulationElementIndex(population, rand.nextInt(elegibleParents));
 
@@ -104,10 +74,79 @@ public class Genetic extends Algorithm {
                 newPopulation.add(child);
             }
 
+            if(mutationProbability < 50){
+                mutationProbability++;
+            }
+
+            numberOfTries++;
+
             population = newPopulation;
         }
 
-        return bestSol;
+        return bestSolEver;
+    }
+
+    public Solution getSolutionOptimized(){
+        Random rand = new Random();
+        Solution bestSol = null;
+        TreeSet<Solution> population = generateInitialPopulation();
+
+        Solution p1, p2, child, bestSolEver;
+        int oldBestSolScore = 2147483647;
+
+        int elegibleParents = populationSize/2;
+        int limitNumberOfTries = 100;
+        int numberOfTries = 0;
+
+        int bestScoreEver = 2147483647;
+
+        bestSol = population.first();
+        bestSolEver = bestSol;
+
+        while(bestSol.getScore() > 0 && numberOfTries < limitNumberOfTries){
+            TreeSet<Solution> newPopulation = new TreeSet<Solution>();
+
+            bestSol = population.first();
+
+            if(bestSolEver.getScore() > bestSol.getScore()){
+                bestSolEver = bestSol;
+            }
+
+            if(bestSol.getScore() != oldBestSolScore){
+                System.out.println("Distance to perfect solution = " + bestSol.getScore());
+                oldBestSolScore = bestSol.getScore();
+
+                if(bestScoreEver > bestSol.getScore()){
+                    bestScoreEver = bestSol.getScore();
+                    numberOfTries = 0;
+                }
+                   
+            }
+
+            while(newPopulation.size() < populationSize){
+                p1 = getPopulationElementIndex(population, rand.nextInt(elegibleParents));
+                p2 = getPopulationElementIndex(population, rand.nextInt(elegibleParents));
+
+                child = reproduce(p1, p2);
+
+                int isMutated = rand.nextInt(100);
+
+                if(mutationProbability >= isMutated){
+                    mutateSolutionOneEvent(child);
+                }
+
+                child.calculateSolutionEval();
+
+                newPopulation.add(child);
+            }
+
+
+            numberOfTries++;
+
+            population = newPopulation;
+        }
+
+        return bestSolEver;
     }
 
 

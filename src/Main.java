@@ -58,6 +58,15 @@ public class Main {
             case (8):
                 algo = new Genetic(prob, 30, 12);
                 break;
+            case (9):
+                algo = new Genetic(prob, 10, 1);
+                break;
+            case (10):
+                algo = new Genetic(prob, 20, 1);
+                break;
+            case (11):
+                algo = new Genetic(prob, 30, 1);
+                break;
             
             default:
                 System.err.println("Unexpeted code path");
@@ -67,9 +76,14 @@ public class Main {
 
             Solution solution;
 
-            if (algorithmSelection >= 3) {
+            if (algorithmSelection >= 3 && algorithmSelection < 9) {
                 solution = algo.getSolutionOptimized();
-            } else {
+            } 
+            else if(algorithmSelection >= 9){
+                solution = algo.getSolutionDynamicMutProb();
+            }
+            else {
+                System.out.println("Getting Solution...");
                 solution = algo.getSolution();
             }
 
@@ -78,6 +92,21 @@ public class Main {
 
             solution.showSolutionOrderedByEventId();
 
+            if(solution.getNumberOfHardInfractions() > 0){
+                System.out.println("\nCouldn't get valid solution");
+                System.out.println("\nBest solution Reached has:");
+                System.out.println(solution.getNumberOfHardInfractions() + " Hard Infractions");
+                System.out.println(solution.getNumberOfSoftInfractions() + " Soft Infractions");
+            }
+            else if(solution.getScore() == 0){
+                System.out.println("\nPerfect Solution Reached");
+            }
+            else{
+                System.out.println("\nBest solution Reached has:");
+                System.out.println(solution.getNumberOfSoftInfractions() + " Soft Infractions");
+            }
+
+            
             System.out.println("\nExecution time: " + totalTime / Math.pow(10, 9) + " seconds");
 
             solution.outputSolutionToFile("../solutions/" + fileName + ".sln");
@@ -88,7 +117,7 @@ public class Main {
 
     private static String getFileName(Scanner scanner) throws InputMismatchException {
         final String namePrefix = "ourFile";
-        final int maxSchedule = 3;
+        final int maxSchedule = 4;
         int schedule = -1;
         while (schedule < 1 || schedule > maxSchedule) {
             System.out.print("\nWhich schedule would you like? (1-" + maxSchedule + "): ");
@@ -108,18 +137,21 @@ public class Main {
     }
 
     private static int getAlgorithmSelection(Scanner scanner) throws InputMismatchException {
-        final int maxNumberAlgorithms = 8;
+        final int maxNumberAlgorithms = 11;
         int algorithm = -1;
         while (algorithm < 1 || algorithm > maxNumberAlgorithms) {
             System.out.println();
-            System.out.println("1- Hill Climbing Algorithm");
-            System.out.println("2- Simulated Annealing Algorithm");
-            System.out.println("3- Genetic Algorithm (10 elements per generation, 3% chance of mutation)");
-            System.out.println("4- Genetic Algorithm (20 elements per generation, 3% chance of mutation)");
-            System.out.println("5- Genetic Algorithm (30 elements per generation, 3% chance of mutation)");
-            System.out.println("6- Genetic Algorithm (10 elements per generation, 12% chance of mutation)");
-            System.out.println("7- Genetic Algorithm (20 elements per generation, 12% chance of mutation)");
-            System.out.println("8- Genetic Algorithm (30 elements per generation, 12% chance of mutation)");
+            System.out.println(" 1 - Hill Climbing Algorithm");
+            System.out.println(" 2 - Simulated Annealing Algorithm");
+            System.out.println(" 3 - Genetic Algorithm (10 elements per generation, 3% chance of mutation)");
+            System.out.println(" 4 - Genetic Algorithm (20 elements per generation, 3% chance of mutation)");
+            System.out.println(" 5 - Genetic Algorithm (30 elements per generation, 3% chance of mutation)");
+            System.out.println(" 6 - Genetic Algorithm (10 elements per generation, 12% chance of mutation)");
+            System.out.println(" 7 - Genetic Algorithm (20 elements per generation, 12% chance of mutation)");
+            System.out.println(" 8 - Genetic Algorithm (30 elements per generation, 12% chance of mutation)");
+            System.out.println(" 9 - Genetic Algorithm (10 elements per generation, dynamic chance of mutation");
+            System.out.println("10 - Genetic Algorithm (20 elements per generation, dynamic chance of mutation");
+            System.out.println("11 - Genetic Algorithm (30 elements per generation, dynamic chance of mutation");
             System.out.print("Which algorithm would you like? (1-" + maxNumberAlgorithms + "): ");
             algorithm = scanner.nextInt();
         }

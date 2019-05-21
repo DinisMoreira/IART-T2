@@ -154,7 +154,7 @@ public class HillClimbing extends Algorithm {
     }
 
 
-    public Solution getSolutionNormal(){
+    public Solution getSolutionDynamicMutProb(){
         return null;
     }
 

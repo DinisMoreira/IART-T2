@@ -148,7 +148,7 @@ public class SimulatedAnnealing extends Algorithm {
         return betterNeighs;
     }
 
-    public Solution getSolutionNormal() {
+    public Solution getSolutionDynamicMutProb() {
         return null;
     }
 
