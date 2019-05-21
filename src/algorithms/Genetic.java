@@ -82,7 +82,7 @@ public class Genetic extends Algorithm {
             bestSol = population.first();
 
             if(bestSol.getScore() != oldBestSolScore){
-                System.out.println(bestSol.getScore());
+                System.out.println("Distance to perfect solution = " + bestSol.getScore());
                 oldBestSolScore = bestSol.getScore();
             }
 
