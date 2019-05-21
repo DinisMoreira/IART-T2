@@ -93,9 +93,9 @@ public class Genetic extends Algorithm {
 
                 child = reproduce(p1, p2);
 
-                int isMutated = rand.nextInt(101);
+                int isMutated = rand.nextInt(100);
 
-                if(mutationProbability > isMutated){
+                if(mutationProbability >= isMutated){
                     mutateSolutionOneEvent(child);
                 }
 
