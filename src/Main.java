@@ -117,7 +117,7 @@ public class Main {
 
     private static String getFileName(Scanner scanner) throws InputMismatchException {
         final String namePrefix = "ourFile";
-        final int maxSchedule = 4;
+        final int maxSchedule = 5;
         int schedule = -1;
         while (schedule < 1 || schedule > maxSchedule) {
             System.out.print("\nWhich schedule would you like? (1-" + maxSchedule + "): ");
