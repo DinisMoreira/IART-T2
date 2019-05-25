@@ -180,7 +180,7 @@ public class Problem {
 
         //Check if there are more values
         if(!fi.hasNext()){
-            System.out.println("Successfully read file");
+            System.out.println("Successfully red file");
             return;
         }
         System.out.println("WARNING: Bad file values");
@@ -295,31 +295,5 @@ public class Problem {
             System.out.println();
         }
 
-
-        /*
-        System.out.println();
-        System.out.println("Number of Events: " + events.size());
-        System.out.println();
-
-        for(int e = 0; e < events.size(); e++){
-            acRooms = events.get(e).getAcceptableRooms();
-            if(e==31 || e == 35){
-
-            System.out.println("Event " + e + " Num Attendees: " + events.get(e).getAttendeesNum());
-            //System.out.println("Event " + e + " Num Attendees: " + rooms.get(events.get(e).getRoom().getID()).getSize());
-
-            if(acRooms.size() > 0){
-                System.out.println("Event " + e + " can take place in rooms: " );
-
-                for(Room r : acRooms){
-                    System.out.print(r.getID() + " ");
-                }
-            }
-            else{
-                System.out.print("Event " + e + " can't occur in any room");
-            }
-            System.out.println();
-        }
-        }*/
     }
 }

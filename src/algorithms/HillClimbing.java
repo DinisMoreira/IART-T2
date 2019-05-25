@@ -89,8 +89,6 @@ public class HillClimbing extends Algorithm {
         int n = 0;
         int i = 0;
         int j = 0;
-
-        //System.out.println("Curr. Score = " + currSolScore);
         
         if(maxTriesPerGen > 100){
             for(j = 0; j < sol.getEventList().size(); j++){
@@ -109,7 +107,6 @@ public class HillClimbing extends Algorithm {
                             betterNeighs.add(newNeigh);
                         }
 
-                        //System.out.println(n + " / " + e.getID());
                         i += rand.nextInt(sol.getProb().getTimeSlots());
                         if(n > maxTriesPerGen || i >= sol.getProb().getTimeSlots()){
                             break;
