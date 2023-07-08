@@ -5,28 +5,19 @@
 
 To compile, from the src directory, type:
 
-    $ make
-
-A build directory will be created if one does not exist containing the generated class files.
-
-Alternatively, the following commands can also be used instead from the src directory:
-
     $ cd .. && mkdir build && cd src
     $ javac -d ./../build/ ./Main.java ./algorithms/*.java ./elements/*.java
 
+A build directory will be created if one does not exist containing the generated class files.
 
 ## Execution
 
-To run, from the src directory, type:
+To run, type:
 
-    $ make run
+    $ cd ./../build
+    $ java Main
 
 Input Files are searched inside directory ProblemFiles
-
-Alternatively, the following command can also be used from the src directory:
-
-    $ java -cp ./../build Main
-
 
 ## Cleaning:
 
