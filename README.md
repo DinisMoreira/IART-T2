@@ -29,3 +29,13 @@ To run from the "build" folder, type:
 
 Input Files are searched inside directory ProblemFiles
 
+![image](https://github.com/DinisMoreira/IART-T2/assets/28096691/9f5fa391-3476-45f1-af8a-f8feb82d5c0c)
+
+After selecting a timetable challenge, the details are presented in text format.
+Select an algorithm to solve this problem:
+
+![image](https://github.com/DinisMoreira/IART-T2/assets/28096691/ddbe460f-c6e2-42ee-94ce-83bf1a13bc49)
+
+The solution reached is then presented as text and stored in the solutions directory
+
+![image](https://github.com/DinisMoreira/IART-T2/assets/28096691/85abb7af-3039-4d3e-909a-4b671aa37d9c)
