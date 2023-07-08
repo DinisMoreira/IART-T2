@@ -1,5 +1,10 @@
 # IART - T2
 
+This is an application capable of solving a typical university course timetabling problem,
+without any external interaction, using optimisation algorithms and meta-heuristics of Artificial Intelligence,
+namely HillClimbing algorithm, Simulated Annealing, and Genetic Algorithms.
+
+More information regarding the details of this challenge and the approach to solve it are available in the Report.pdf file
 
 ## Compilation
 
@@ -12,15 +17,15 @@ A build directory will be created if one does not exist containing the generated
 
 ## Execution
 
-To run, type:
+Before the first run, create a folder called solutions:
 
-    $ cd ./../build
+     $ cd ..
+     $ mkdir solutions
+
+To run from the "build" folder, type:
+
+    $ cd build
     $ java Main
 
 Input Files are searched inside directory ProblemFiles
 
-## Cleaning:
-
-To remove created files, from the src directory, type:
-
-    $ make clean
