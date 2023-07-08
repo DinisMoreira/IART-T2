@@ -4,7 +4,7 @@ This is an application capable of solving a typical university course timetablin
 without any external interaction, using optimisation algorithms and meta-heuristics of Artificial Intelligence,
 namely HillClimbing algorithm, Simulated Annealing, and Genetic Algorithms.
 
-![59429742_807678219604678_4097608240169222144_n](https://github.com/DinisMoreira/IART-T2/assets/28096691/30568ce6-7452-48b2-a51b-d733cde2688f)
+![59429742_807678219604678_4097608240169222144_n](https://github.com/DinisMoreira/IART-T2/assets/28096691/b79e72a3-da68-443e-bfa4-d56fb1fb3ae5)
 
 More information regarding the details of this challenge and the approach to solve it are available in the Report.pdf file
 
